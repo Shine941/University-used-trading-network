@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-%w_3_gb)pdh5tsho6a#zlq29_gdg4dr13u&lrw)zcfg*n(qgj5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.unitrade.com', '127.0.0.1']
 
 
 # Application definition
