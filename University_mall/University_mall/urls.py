@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.http import HttpResponse
-
+from apps.chat import views
 def log(request):
     # 1.导入
     import logging
@@ -33,4 +33,5 @@ def log(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('log/', log),
+    path('index/', views.index),
 ]
