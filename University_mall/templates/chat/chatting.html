@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聊天室</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="shortcut icon" href="../static/favicon.ico">
+    <link rel="stylesheet" href="../static/css/chatting.css">
+    <link rel="stylesheet" href="../static/css/base.css">
+    <script>
+    //websocket请求就是默认ws://url
+    socket = new WebSocket("ws://127.0.0.1:8000/room/{{group_num}}/")
+    //创建好连接之后自动触发（服务端执行self.accept())
+    socket.onopen = function (){
+        let tag = document.createElement("div");
+        tag.className= 'item item-center';
+        tag.innerHTML = '<span>连接成功，请诚信交易哦。</span>';
+        document.querySelector('.content').appendChild(tag);
+        {#document.getElementById("message").appendChild(tag);#}
+    }
+    // 当websocket接收到服务端发来的消息时，自动会触发这个函数
+    socket.onmessage = function (event){
+        //
+        console.log(event.data);
+        let item = document.createElement('div');
+        item.className = 'item item-right';
+        item.innerHTML = `<div class="bubble bubble-left">${event.data}</div><div class="avatar"><img src="../static/images/2.jpg" /></div>`;
+        document.querySelector('.content').appendChild(item);
+        document.querySelector('#textarea').value = '';
+        document.querySelector('#textarea').focus();
+        //滚动条置底
+        {#let height = document.querySelector('.content').scrollHeight;#}
+        document.querySelector(".content").scrollTop = document.querySelector('.content').scrollHeight;
+    }
+    //服务端主动断开连接时，这个方法会被触发
+    socket.onclose = function (event){
+        let tag = document.createElement("div");
+        tag.innerText = "[断开连接]";
+        document.getElementById("message").appendChild(tag);
+    }
+    function sendMessage(){
+        var tag = document.getElementById('textarea');
+        socket.send(tag.value);
+    }
+    function closeConn(){
+        socket.close();  //向服务端发送断开连接的请求
+    }
+</script>
+</head>
+<body>
+    <!-- 头部模块制作start -->
+    <header class="header">
+        <div class="logo">
+            <img src="../static/images/logo.png" alt="">
+        </div>
+        <div class="logotext">
+            <img src="../static/images/logotext.png" alt="">
+        </div>
+        <table class="head">
+            <th>
+                <a href="https://www.haust.edu.cn/" target="_blank" onclick="closeConn()">返回主页</a>
+            </th>
+            <th>
+                <a href="#">管理员</a>
+            </th>
+            <th>
+                <a href="#">关于我们</a>
+            </th>
+        </table>
+    </header>
+    <!-- 头部模块制作end -->
+    
+    <!--中间模块制作start-->
+    <div class="chatting_body">
+        <div class="content">
+            <div class="item item-center"><span>请诚信交易哦。</span></div>
+            <div class="item item-right"><div class="bubble bubble-right">hello<br/>你好呀</div><div class="avatar"><img src="../static/images/2.jpg" /></div></div>
+            <div class="item item-center"><span>昨天 13:15</span></div>
+            <div class="item item-right"><div class="bubble bubble-right">刚刚不在，不好意思</div><div class="avatar"><img src="../static/images/2.jpg" /></div></div>
+            <div class="item item-left"><div class="avatar"><img src="../static/images/avatar.png" /></div><div class="bubble bubble-left">没事<br/>你继续！</div></div>
+            <div class="item item-left"><div class="avatar"><img src="../static/images/avatar.png" /></div><div class="bubble bubble-left">看到了<br/>在下面</div></div>
+            <div class="item item-left"><div class="avatar"><img src="../static/images/avatar.png" /></div><div class="bubble bubble-left">你发一个<br/>刚刚网卡了</div></div>
+            <div class="item item-right"><div class="bubble bubble-right">可以<br/>一会儿再发给你</div><div class="avatar"><img src="../static/images/2.jpg"/></div></div>
+        </div>
+        <div class="input-area">
+            <textarea name="text" id="textarea"></textarea>
+            <div class="button-area">
+                <button id="send-btn" onclick="sendMessage()">发 送</button>
+            </div>
+        </div>
+    </div>
+    <!-- 中间模块制作end -->
+</body>
+
+</html>
