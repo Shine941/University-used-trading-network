@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实物商品中心</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script type="text/javascript" src="../static/js/host.js"></script>
+    <script type="text/javascript" src="../static/js/axios-0.18.0.min.js"></script>
+    <link rel="stylesheet" href="../static/images/icon/iconfont.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/offline.css">
+    <link rel="shortcut icon" href="../static/favicon.ico">
+</head>
+<body>
+    <!-- 头部模块制作start -->
+    <header class="header">
+        <div class="logo">
+            <img src="../static/images/logo.png" alt="">
+        </div>
+        <div class="logotext">
+            <img src="../static/images/logotext.png" alt="">
+        </div>
+        <!--导航模块-->
+        <nav>
+            <table class="head">
+                <th class="head_search">
+                    <div class="ser_head">
+                        <div class="sehead_input">
+                            <b><input type="text" name="serch_text" id="headser_text"></b>
+                            <button class=""></button>
+                        </div>
+                        <div class="sehead_img">
+                            <img src="../static/images/搜索.png" alt="">
+                        </div>
+                    </div>
+                </th>
+                <th class="head_new">
+                    <a href="./new_post.html">新建</a>
+                </th>
+                <th>
+                    <a href="./center.html">个人主页</a>
+                </th>
+                </th>
+                <th>
+                    <a href="./center.html">商城</a>
+                </th>
+                <th>
+                    <a href="./enroll.html" target="_blank">通知</a>
+                </th>
+                <th>
+                     <a href="#">退出</a>
+                </th>
+            </table>
+        </nav>
+    </header>
+    <!-- 头部模块制作end -->  
+    <!--中间模块制作start-->
+    <!-- aside模块制作start -->
+    <aside>
+        <h1>实物商品<br></div></h1>
+        <!-- aside_nav制作 -->
+        <div class="aside_nav">
+            <div class="asi_bla"></div>
+            <br>
+            <br>
+                <div class="off_title">
+                        <a href="#">· 交通用具</a>
+                </div>
+                <div class="off_title">
+                        <a href="#">· 生活用品</a>
+                </div> 
+                <div class="off_title">
+                        <a href="#">· 学习用品</a>
+                </div> 
+                <div class="off_title">
+                        <a href="#">· 娱乐用品</a>
+                </div> 
+            </div>
+        </div>
+    </aside>
+    <!-- aside模块制作end -->
+
+    <!--section模块制作start-->
+    <section>
+        <div class="ser_up">
+            <div class="seup_logo"><img src="../static/images/logo.png" alt=""></div>
+            <div class="ser_center">
+                <div class="secenter_input">
+                    <b><input type="text" name="serch_text" id="serch_text"></b>
+                    <button class=""></button>
+                </div>
+                <div class="secenter_img"><img src="../static/images/搜索.png" alt=""></div>
+            </div>
+            <div class="ser_new"><button>新   建</button></div>
+        </div>
+        <div class="ser_bottom">
+            <a href="#">鞋子</a>
+            <a href="#">上衣</a>
+            <a href="#">电动车</a>
+        </div>
+    </section>
+    <!--section模块制作end-->
+
+    <!--article模块制作start-->
+    <article>
+        <div class="po_model" v-for="post in source_posts">
+            <div class="blank"></div>
+            <div class="post_model">
+                <div class="post_info">
+                    <div class="post_money">
+                        <div class="money_num">35.0</div>
+                        <div class="yuan">元</div>
+                    </div>
+                    <div class = "info_urname">
+                        小明
+                    </div>
+                    <div class="info_time">
+                        <a href="#">2021/12/38 14:80</a>
+                    </div>
+                    <button class="info_del"><a class="iconfont">&#xe718;</a></button>   
+                </div>
+                <div class="blank"></div>
+                <div class="post_text">
+                    <p>&nbsp&nbsp&nbsp文字nihaocbuiwdbcijw;bvij;dwbcyiaeb你说的是吧v科 vfse你要是入境v尝试过人们把很不错给他人生命vc技verb黑色版闹腾从VS个人太难过 部类Irving</p>
+                </div>
+                <div class="blank"></div>
+                <div class="post_img">
+                    <img src="../static/images/1.jpg" alt="">
+                    <img src="../static/images/2.jpg">
+                    <img src="../static/images/2.jpg">
+                </div>
+                <div class="blank"></div>
+                <div class="post_end">
+                    <div class="pend_mark">
+                        <div class="ma_good">
+                            <a href="#"class="iconfont">&#xe651;</a>
+                            <span>(</span><span class="mar_text" id="goo_num">5</span><span>)</span>
+                        </div>
+                        <div class="ma_comm">
+                            <a href="#"class="iconfont">&#xe65a;</a>
+                            <span>(</span><span id="com_num">5</span><span>)</span>
+                        </div>
+                        <div class="ma_col">
+                            <a href="#" class="iconfont">&#xe8b4;</a>
+                            <span>(</span><span id="com_num">5</span><span>)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="blank"></div>
+            </div>
+        </div>
+    </article>
+    <!--article模块制作end-->
+</body>
+</html>

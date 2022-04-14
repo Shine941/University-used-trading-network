@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聊天</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script type="text/javascript" src="../static/js/host.js"></script>
+    <script type="text/javascript" src="../static/js/axios-0.18.0.min.js"></script>
+    <link rel="shortcut icon" href="../static/favicon.ico">
+    <link rel="stylesheet" href="../static/images/icon/iconfont.css">
+    <link rel="stylesheet" href="../static/css/base.css">
+    <link rel="stylesheet" href="../static/css/chatting.css">
+    <script type="text/javascript" src="../static/js/chatting.js"></script>
+</head>
+<body>
+    <!-- 头部模块制作start -->
+    <header class="header">
+        <div class="logo">
+            <img src="../static/images/logo.png" alt="">
+        </div>
+        <div class="logotext">
+            <img src="../static/images/logotext.png" alt="">
+        </div>
+        <!--导航模块-->
+        <nav>
+            <table class="head">
+                <th class="head_search">
+                    <div class="ser_head">
+                        <div class="sehead_input">
+                            <b><input type="text" name="serch_text" id="headser_text"></b>
+                            <button class=""></button>
+                        </div>
+                        <div class="sehead_img">
+                            <img src="../static/images/搜索.png" alt="">
+                        </div>
+                    </div>
+                </th>
+                <th class="head_new">
+                    <a href="./new_post.html">新建</a>
+                </th>
+                <th>
+                    <a href="./center.html">个人主页</a>
+                </th>
+                </th>
+                <th>
+                    <a href="./center.html">商城</a>
+                </th>
+                <th>
+                    <a href="./enroll.html" target="_blank">通知</a>
+                </th>
+                <th>
+                     <a href="#">退出</a>
+                </th>
+            </table>
+        </nav>
+    </header>
+    <!-- 头部模块制作end -->
+    
+    <!--中间模块制作start-->
+    <div class="chatting_body">
+        <div class="content">
+            <div class="item item-center"><span>请诚信交易哦。</span></div>
+            <div class="item item-right"><div class="bubble bubble-right">hello<br/>你好呀</div><div class="avatar"><img src="../static/images/2.jpg" /></div></div>
+            <div class="item item-center"><span>昨天 13:15</span></div>
+            <div class="item item-right"><div class="bubble bubble-right">刚刚不在，不好意思</div><div class="avatar"><img src="../static/images/2.jpg" /></div></div>
+            <div class="item item-left"><div class="avatar"><img src="../static/images/avatar.png" /></div><div class="bubble bubble-left">没事<br/>你继续！</div></div>
+            <div class="item item-left"><div class="avatar"><img src="../static/images/avatar.png" /></div><div class="bubble bubble-left">看到了<br/>在下面</div></div>
+            <div class="item item-left"><div class="avatar"><img src="../static/images/avatar.png" /></div><div class="bubble bubble-left">你发一个<br/>刚刚网卡了</div></div>
+            <div class="item item-right"><div class="bubble bubble-right">可以<br/>一会儿再发给你</div><div class="avatar"><img src="../static/images/2.jpg"/></div></div>
+        </div>
+        <div class="input-area">
+            <textarea name="text" id="textarea"></textarea>
+            <div class="button-area">
+                <button id="send-btn" onclick="send()">发 送</button>
+            </div>
+        </div>
+    </div>
+    <!-- 中间模块制作end -->
+</body>
+</html>

@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>聊天室</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <link rel="shortcut icon" href="../static/favicon.ico">
-    <link rel="stylesheet" href="../static/css/chatting.css">
-    <link rel="stylesheet" href="../static/css/base.css">
+    <script type="text/javascript" src="/static/js/host.js"></script>
+    <script type="text/javascript" src="/static/js/axios-0.18.0.min.js"></script>
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <link rel="stylesheet" href="/static/images/icon/iconfont.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/chatting.css">
+    <script type="text/javascript" src="/static/js/chatting.js"></script>
     <script>
     //websocket请求就是默认ws://url
     socket = new WebSocket("ws://127.0.0.1:8000/room/{{group_num}}/")
@@ -25,7 +29,7 @@
         console.log(event.data);
         let item = document.createElement('div');
         item.className = 'item item-right';
-        item.innerHTML = `<div class="bubble bubble-left">${event.data}</div><div class="avatar"><img src="../static/images/2.jpg" /></div>`;
+        item.innerHTML = `<div class="bubble bubble-left">${event.data}</div><div class="avatar"><img src="/static/images/2.jpg" alt="" /></div>`;
         document.querySelector('.content').appendChild(item);
         document.querySelector('#textarea').value = '';
         document.querySelector('#textarea').focus();
@@ -34,7 +38,7 @@
         document.querySelector(".content").scrollTop = document.querySelector('.content').scrollHeight;
     }
     //服务端主动断开连接时，这个方法会被触发
-    socket.onclose = function (event){
+    socket.onclose = function (){
         let tag = document.createElement("div");
         tag.innerText = "[断开连接]";
         document.getElementById("message").appendChild(tag);
@@ -50,24 +54,45 @@
 </head>
 <body>
     <!-- 头部模块制作start -->
-    <header class="header">
+   <header class="header">
         <div class="logo">
-            <img src="../static/images/logo.png" alt="">
+            <img src="/static/images/logo.png" alt="">
         </div>
         <div class="logotext">
-            <img src="../static/images/logotext.png" alt="">
+            <img src="/static/images/logotext.png" alt="">
         </div>
-        <table class="head">
-            <th>
-                <a href="https://www.haust.edu.cn/" target="_blank" onclick="closeConn()">返回主页</a>
-            </th>
-            <th>
-                <a href="#">管理员</a>
-            </th>
-            <th>
-                <a href="#">关于我们</a>
-            </th>
-        </table>
+        <!--导航模块-->
+        <nav>
+            <table class="head">
+                <th class="head_search">
+                    <div class="ser_head">
+                        <div class="sehead_input">
+                            <b><input type="text" name="serch_text" id="headser_text"></b>
+                            <button class=""></button>
+                        </div>
+                        <div class="sehead_img">
+                            <img src="../static/images/搜索.png" alt="">
+                        </div>
+                    </div>
+                </th>
+                <th class="head_new">
+                    <a href="./new_post.html">新建</a>
+                </th>
+                <th>
+                    <a href="./center.html">个人主页</a>
+                </th>
+                </th>
+                <th>
+                    <a href="./center.html">商城</a>
+                </th>
+                <th>
+                    <a href="./enroll.html" target="_blank">通知</a>
+                </th>
+                <th>
+                     <a href="#">退出</a>
+                </th>
+            </table>
+        </nav>
     </header>
     <!-- 头部模块制作end -->
     
