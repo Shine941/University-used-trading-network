@@ -1,0 +1,314 @@
+body {
+    background-image: url(../images/7.jpg) ;
+    background-repeat: no-repeat;
+    border-style: none;
+    background-position:center;
+    background-size: contain;
+    background-attachment: fixed;
+    background-size: 100%;
+    font-family: Verdana, sans-serif;
+    margin:0;
+    margin-left: auto;
+    margin-right: auto;
+    min-width:1200px;
+    min-height: 100%;
+}
+/* *************************************头部制作start****************************************************** */
+
+/***********************************************头部制作end************************************************/
+
+/*中间模块制作start*/
+/***********************************************aside模块start**********************************************/
+aside{
+    position: fixed;
+    float: left;
+    top:150px;
+    right: 72%;
+    width: 200px;
+    height: 500px;
+    background-color: rgba(165, 159, 159, 0.459);
+    box-shadow:1px 1px 10px #ffffff;
+    /*圆角化*/
+    border-radius:10px;
+    z-index: 1;
+}
+/*个人主页*/
+aside h1{
+    position: absolute;
+    top:5%;
+    left: 15%;
+    font-size: 35px;
+    color: white;
+}
+/*aside_nav*/
+.aside_nav{
+    position: absolute;
+    top:18%;
+    left: 10%;
+    padding:10px;
+}
+.aside_nav a{
+    text-decoration:none;
+    color: rgb(255, 255, 255);
+}
+.aside_nav a:hover {
+    color: rgb(119, 119, 119);
+    border-radius:2px;
+}
+/*横条条*/
+.asi_bla{
+    position: fixed;
+    right:72%;
+    background-color:rgba(255, 255, 255, 0.87);
+    height: 2px;
+    width: 200px;
+}
+/*电子*/
+.online{
+    height: 150px;
+}
+/*实物*/
+.offline{
+    height: 220px;
+}
+.on_title a{
+    font-weight:bold;
+    font-size: 23px;
+}
+/*小标题格式*/
+.sel{
+    position: relative;
+    padding-left:15px;
+}
+.sel li{
+    padding:10px;
+    height: 40px;
+    font-size: 18px;
+}
+/**********************************************section模块制作**********************************************/
+section{
+    position: absolute;
+    top:80px;
+    left: 30%;
+    height: 100px;
+    width: 850px;
+    border-radius:10px;
+    padding:13px;
+}
+.ser_up{
+    position: relative;
+    height: 80%;
+    /* background-color: red; */
+}
+.ser_up img{
+    height:50px;
+}
+.seup_logo{
+    position: absolute;
+    height:50px;
+    top: 10%;
+}
+.seup_logo img{
+    border-radius: 50%;
+}
+.ser_center{
+    position: absolute;
+    left: 70px;
+    width: 80%;
+    height:100%;
+    border-radius: 27px;
+    box-shadow:0px 6px 17px #ffffff;
+    background-color: rgb(180, 196, 209);
+}
+.secenter_input{
+    position: absolute;
+    left: 7%;
+    top: 5%;
+    height: 50px;
+    width: 80%;
+}
+.secenter_input input{
+    position: absolute;
+    background-color: rgba(24, 24, 24, 0);
+    height: 50px;
+    width: 100%;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+}
+.secenter_img{
+    position: absolute;
+    left: 90%;
+    top: 8%;
+}
+.ser_new{
+    position: absolute;
+    left:90%;
+    top: 10%;
+    border-radius: 25px;
+    height:50px;
+    width: 80px;
+    padding:10px;
+    padding-left: 15px;
+    background-color: rgb(255, 255, 255);
+    box-shadow:0px 6px 10px #ffffff;
+}
+.ser_new button{
+    font-size:20px;
+    font-family:cursive;
+    background-color: rgba(255, 255, 255, 0);
+}
+.ser_bottom{
+    position: relative;
+    top: 5%;
+    left:12%;
+    width: 70%;
+    /* background-color: rgb(255, 255, 0); */
+}
+.ser_bottom a{
+    text-decoration:none;
+    color: rgb(71, 71, 71);;
+}
+.ser_bottom a:hover{
+    color: rgb(0, 0, 0);
+}
+/**********************************************article模块制作***********************************************/
+article{
+    position: absolute;
+    top:200px;
+    left: 30%;
+    width: 850px;
+    height: 5000px;
+    background-color: rgba(255, 255, 255, 0.418);
+    box-shadow:1px 1px 10px #e6e6e6;
+    border-radius:10px;
+    font-family: cursive;
+}
+.blank{
+    position: relative;
+    width: 100%;
+    height: 20px;
+    background-color:rgba(255, 255, 255, 0);
+}
+.post_model{
+    position: relative;
+    left: 3%;
+    width: 800px;
+    background-color: rgba(253, 253, 253, 0.404);
+    border-radius:10px;
+}
+.post_model a{
+    text-decoration:none;
+}
+.post_info{
+    position:relative;
+    width: 100%;
+    height: 60px;
+    border-radius:10px;
+}
+.post_money{
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    width: 110px;
+    height: 60px;
+    color: rgb(0, 0, 0);
+    border-radius:20px;
+    padding:15px;
+    box-shadow: -4px 4px 10px #c5c5c5;
+    background-color: rgb(255, 255, 255);
+}
+.money_num{
+    position: relative;
+    font-size:30px;
+}
+.yuan{
+    position: absolute;
+    top: 45%;
+    left: 70%;
+    font-size:15px;
+    color: rgb(80, 80, 80);
+    background-color: rgba(255, 255, 255, 0);
+}
+.info_urname{
+    position: absolute;
+    left: 15%;
+    top: 18%;
+    font-size: 30px;
+    color: rgb(0, 0, 0);
+}
+.info_time{
+    position: absolute;
+    left: 15%;
+    top:70%;
+    font-size: 10px;
+    color: rgb(77, 77, 77);
+    font-family:emoji;
+}
+.info_del{
+    position: absolute;
+    left: 94%;
+    background-color: rgba(253, 253, 253, 0);
+}
+.iconfont{
+    font-size: 25px;
+}
+.info_del a:hover{
+    font-size:30px;
+    color: black;
+}
+.post_text{
+    position: relative;
+    left: 5%;
+    width: 90%;
+    /* background-color: indigo; */
+    font-size: 20px;
+    color:rgb(77, 77, 77);
+}
+.post_img{
+    position: relative;
+    left: 5%;
+    width: 90%;
+    border-radius:10px;
+    box-shadow:0px 2px 0px rgb(177, 177, 177);
+}
+.post_img img{
+    position: relative;
+    max-width: 46%;
+    left: 10px;
+    height: 230px;
+    border-style: solid ;
+    border-width: 8px;
+    border-color: rgba(207, 207, 207, 0);
+    border-radius:10px;
+}
+.post_end{
+    height: 25px;
+    /* background-color: crimson; */
+    font-size: 25px;
+}
+.post_end a:hover{
+    color: black;
+}
+.pend_mark{
+    position: relative;
+    height: 30px;
+    left: 5%;
+    color: rgb(119, 119, 119);
+    /* background-color:rebeccapurple; */
+}
+.ma_good{
+    position: absolute;
+    left: 5%;
+    width: 20%;
+}
+.ma_comm{
+    position: absolute;
+    left: 45%;
+    width: 20%;
+}
+.ma_col{
+    position: absolute;
+    left: 80%;
+    width: 20%;
+}
+/*中间模块end*/

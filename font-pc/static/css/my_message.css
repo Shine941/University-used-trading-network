@@ -1,0 +1,204 @@
+body {
+    background-image: url(../images/7.jpg) ;
+    background-repeat: no-repeat;
+    border-style: none;
+    background-position:center;
+    background-size: contain;
+    background-attachment: fixed;
+    background-size: 100%;
+    font-family: Verdana, sans-serif;
+    margin:0;
+    margin-left: auto;
+    margin-right: auto;
+    min-width:1200px;
+    min-height: 100%;
+}
+/* *************************************头部制作start****************************************************** */
+
+/***********************************************头部制作end************************************************/
+
+/*中间模块制作start*/
+/***********************************************aside模块start**********************************************/
+aside{
+    position: fixed;
+    float: left;
+    top:150px;
+    right: 72%;
+    width: 200px;
+    height: 500px;
+    background-color: rgba(165, 159, 159, 0.459);
+    box-shadow:1px 1px 10px #ffffff;
+    /*圆角化*/
+    border-radius:10px;
+    z-index: 1;
+}
+/*个人主页*/
+aside h1{
+    position: absolute;
+    top:5%;
+    left: 15%;
+    font-size: 35px;
+    color: white;
+}
+/*aside_nav*/
+.aside_nav{
+    position: absolute;
+    top:25%;
+    left: 10%;
+    padding:10px;
+}
+.aside_nav li{
+    height: 60px;
+}
+.aside_nav a{
+    font-family: Verdana, sans-serif;
+    font-size: 20px;
+    padding:10px;
+    color: rgb(255, 255, 255);
+    text-decoration:none;
+}
+.aside_nav a:hover {
+    font-size: 25px;
+    font-weight:bold;
+    color: rgb(119, 119, 119);
+    border-radius:10px;
+}
+#my_message{
+    font-size: 25px;
+    border-radius:10px;
+    font-weight:bold;
+}
+/**********************************************section模块制作**********************************************/
+section{
+    position: absolute;
+    top:80px;
+    left: 30%;
+    height: 250px;
+    width: 850px;
+    box-shadow:1px 1px 10px #e6e6e6;
+    border-radius:10px;
+}
+/*主题背景*/
+.theme{
+    top:0%;
+    height: 100%;
+    width: 100%;
+    background-size:cover;
+    border-radius:10px;
+}
+/*头像*/
+.avatar{
+    position: absolute;
+    top: 30%;
+    left: 42%;
+    border-radius:50%;
+    width: 15%;
+}
+/**********************************************article模块制作***********************************************/
+article{
+    position: absolute;
+    top:350px;
+    left: 30%;
+    width: 850px;
+    height: 5000px;
+    background-color: rgba(255, 255, 255, 0.418);
+    box-shadow:1px 1px 10px #e6e6e6;
+    border-radius:10px;
+}
+.blank{
+    position: relative;
+    width: 100%;
+    height: 20px;
+    background-color:rgba(255, 255, 255, 0);
+}
+.post_model{
+    position: relative;
+    left: 3%;
+    width: 800px;
+    background-color: rgba(253, 253, 253, 0.404);
+    border-radius:10px;
+    
+}
+.post_info{
+    position:relative;
+    width: 100%;
+    padding: 15px;
+    /* background-color: red; */
+    border-radius:10px;
+
+}
+.or_name{
+    position: relative;
+    float: left;
+    font-size: 25px;
+    color: black;
+    line-height: 45px;
+}
+.mes_sel{
+    font-size: 25px;
+    color: rgb(146, 146, 146);
+    line-height:45px;
+    font-family: cursive;
+    padding-left: 8%;
+}
+.info_time{
+    position: absolute;
+    left: 10%;
+    top: 80%;
+    width: 15%;
+    font-size: 10px;
+    /* background-color: pink; */
+    color: rgb(77, 77, 77);
+}
+.info_time a{
+    text-decoration:none;
+}
+.info_del{
+    position: absolute;
+    top: 10%;
+    left: 95%;
+    background-color: rgba(216, 191, 216, 0);
+}
+.or_com{
+    position: relative;
+    left: 5%;
+    width: 90%;
+    font-family: cursive;
+    font-size: 25px;
+    color:rgb(0, 0, 0);
+}
+/*引用文章格式*/
+.used_post{
+    position: relative;
+    left: 5%;
+    width: 90%;
+    font-family: cursive;
+    background-color: rgba(255, 255, 255, 0.699);
+    width: 720px;
+    height: 170px;
+    border-radius:10px;
+}
+.used_img{
+    position: relative;
+    padding: 15px;
+}
+.used_img img{
+    position: relative;
+    width: 200px;
+    max-height: 160px;
+    border-radius:10px;
+}
+.used_text{
+    position: absolute;
+    top: 70px;
+    left: 230px;
+    width: 450px;
+    font-size: 25px;
+    color: rgb(77, 77, 77);
+    /* background-color: hotpink; */
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow:hidden;
+    -o-text-overflow:ellipsis;
+}
+/*中间模块end*/
