@@ -29,7 +29,6 @@ def log(request):
     logger.debug('～～～～～～～～～～')
     return HttpResponse('log')
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('log/', log),
