@@ -17,11 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.http import HttpResponse
 from apps.chat import views
+
+
 def log(request):
     # 1.导入
     import logging
     # 2.创建日志器
-    logger=logging.getLogger('django')
+    logger = logging.getLogger('django')
     # 3.调动日志器的方法保存日志
     logger.info('用户登录了')
     logger.warning('redis缓存不足')
@@ -31,14 +33,16 @@ def log(request):
 
 
 # 注册转换器
-from utils.converters import USernameConverter
+from utils.converters import UsernameConverter,MobileConverter
 from django.urls import register_converter
+
 # 转换器的类；转换器的名字
-register_converter(USernameConverter, 'username')
+register_converter(UsernameConverter, 'username')
+register_converter(MobileConverter, 'mobile')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('log/', log),
-    path('index/', views.index),
+    path('chat/', views.chat),
     # 导入users子应用的路由
     path('', include('apps.users.urls')),
 ]
