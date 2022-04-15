@@ -29,6 +29,12 @@ def log(request):
     logger.debug('～～～～～～～～～～')
     return HttpResponse('log')
 
+
+# 注册转换器
+from utils.converters import USernameConverter
+from django.urls import register_converter
+# 转换器的类；转换器的名字
+register_converter(USernameConverter, 'username')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('log/', log),
