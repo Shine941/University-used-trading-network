@@ -9,6 +9,8 @@ window.onload = function(){
 			usernameErrorSpan:"",
 			pwdErrorSpan:"",
 			checkErrorSpan:"",
+			sms_code_tip: "获取短信验证码",
+			sending_flag: false, // 正在发送短信标志
 			show_num:[],
 			//value值
 			phone_value:"",
@@ -20,6 +22,7 @@ window.onload = function(){
 			confirmpwd:"",
 			gender:'male',
 			check_code:"",
+			sms_code:"",
 		},
 		methods: {
 			//验证码获取
@@ -74,9 +77,9 @@ window.onload = function(){
     		phoneError_fd(){
 				// 去除掉前后空白
 				this.phone_value = this.phone_value.trim();
-					if(this.phone_value == ""){
+				if(this.phone_value == ""){
 						this.phoneErrorSpan= "手机号不能为空";
-					}else{
+				}else{
             		// 手机号不为空,并且长度也合法,接下来继续判断用户名中是否有特殊符号
 					var regExp =/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
 					var ok = regExp.test(this.phone_value)
@@ -85,13 +88,84 @@ window.onload = function(){
 						this.phoneErrorSpan = "";
 					}else{
 					// 不合法
-					this.phoneErrorSpan = "请输入正确手机号";	
+					this.phoneErrorSpan = "请输入正确手机号";
 					}
+				}
+				if(this.phoneErrorSpan == ""){
+					var url = this.host + '/mobiles/' + this.phone_value + '/count/';
+					axios.get(url, {
+						responseType: 'json',
+						withCredentials:true,
+					})
+						.then(response => {
+							if (response.data.count > 0) {
+								this.phoneErrorSpan = "手机号已存在";
+							} else {
+								this.phoneErrorSpan = "";
+							}
+						})
+						.catch(error => {
+							console.log(error.response);
+						})
 				}
     		},
 			// 获得焦点:清空span的错误信息.
 			phoneFocus_fd(){
 				this.phoneErrorSpan = "";
+			},
+			// 发送手机短信验证码
+			send_sms_code() {
+				if (this.sending_flag == true) {
+					return;
+				}
+				this.sending_flag = true;
+				// 校验参数，保证输入框有数据填写
+				this.phoneError_fd();
+				if (this.phoneErrorSpan != "") {
+					this.sending_flag = false;
+					return;
+				}
+				var check_code_id = this.show_num.join("");
+				// 向后端接口发送请求，让后端发送短信验证码
+				this.draw();
+				var url = this.host + '/sms_codes/' + this.phone_value + '/' + '?check_code=' + this.check_code
+					+ '&check_code_id=' + check_code_id
+				axios.get(url, {
+					responseType: 'json',
+					withCredentials:true,
+				})
+					.then(response => {
+						// 表示后端发送短信成功
+						// 倒计时60秒，60秒后允许用户再次点击发送短信验证码的按钮
+						var num = 60;
+						// 设置一个计时器
+						var t = setInterval(() => {
+							if (num == 1) {
+								// 如果计时器到最后, 清除计时器对象
+								clearInterval(t);
+								// 将点击获取验证码的按钮展示的文本回复成原始文本
+								this.sms_code_tip = '获取短信验证码';
+								// 将点击按钮的onclick事件函数恢复回去
+								this.sending_flag = false;
+							} else {
+								num -= 1;
+								// 展示倒计时信息
+								this.sms_code_tip = num + '秒';
+							}
+						}, 1000, 60)
+					})
+					.catch(error => {
+						if (error.response.status == 400) {
+							this.smsErrorSpan = error.response.data.message;
+							this.error_sms_code = true;
+						} else {
+							console.log(error.response.data);
+						}
+						this.sending_flag = false;
+					})
+			},
+			smsFocus_fd(){
+				this.smsErrorSpan = "";
 			},
 			//用户名验证
 			usernameError_fd(){
@@ -103,7 +177,7 @@ window.onload = function(){
 				}else{
 					// 用户名不是空,继续判断长度是否合法
 					if(this.username_value.length < 2 || this.username_value.length > 14){
-						this.usernameErrorSpan = "用户名长度必须在[2-14]之间";	
+						this.usernameErrorSpan = "用户名长度必须在[2-14]之间";
 					}else{
 						// 用户名不为空,并且长度也合法,接下来继续判断用户名中是否有特殊符号
 						var regExp = /^[a-zA-Z0-9]+$/
@@ -113,8 +187,25 @@ window.onload = function(){
 							this.usernameErrorSpan= "";
 						}else{
 							// 不合法
-							this.usernameErrorSpan = "昵称只能由数字和字母组成";	
+							this.usernameErrorSpan = "昵称只能由数字和字母组成";
 						}
+					}
+					if(this.usernameErrorSpan == ""){
+						var url = this.host + '/usernames/' + this.username_value + '/count/';
+						axios.get(url, {
+							responseType: 'json',
+							withCredentials:true,
+						})
+							.then(response => {
+								if (response.data.count > 0) {
+									this.usernameErrorSpan = "昵称已存在";
+								} else {
+									this.usernameErrorSpan = "";
+								}
+							})
+							.catch(error => {
+								console.log(error.response);
+							})
 					}
 				}
 			},
@@ -124,7 +215,7 @@ window.onload = function(){
 			},
 			//密码验证
     		// 确认密码失去焦点就验证.
-			pwdError_fd(){//进行比对 
+			pwdError_fd(){//进行比对
 				if(this.userpwd != this.confirmpwd){
 					this.pwdErrorSpan = "密码和确认密码不一致";
 				}else if(this.userpwd ==""){
@@ -143,6 +234,8 @@ window.onload = function(){
 				this.checkError_fd();//触发文本框的获取焦点事
 				this.phoneFocus_fd();
 				this.phoneError_fd();
+				this.smsFocus_fd();
+				this.send_sms_code();
 				this.username_focus();
 				this.usernameError_fd();
 				this.pwdErrprFocus_fd()
@@ -156,6 +249,7 @@ window.onload = function(){
 					console.log("好了好了好了好了好了好了好了好了好了好了好了好了好了好了")
 					axios.post(this.host + '/register/', {
 						phone:this.phone_value,
+						sms_code:this.sms_code,
 						stu_id:this.stu_id,
 						name:this.name,
 						class:this.stu_class,
@@ -180,9 +274,6 @@ window.onload = function(){
 				}
 			},
 		}
-		
-	})
-	
 
+	})
 }
-	
