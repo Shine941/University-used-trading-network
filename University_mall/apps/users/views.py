@@ -53,18 +53,6 @@ class MobileCountView(View):
             3.3密码满足规则
             3.4确认密码和密码一致
             3.5 手机号满足规则，手机号学号不能重复
-        axios.post(this.host + '/register/', {
-						phone:this.phone_value, //手机号
-						stu_id:this.stu_id,  //学号
-						name:this.name,  //名字
-						class:this.stu_class, //班级
-						username: this.username_value, //昵称
-						password: this.userpwd, //密码
-						password2: this.confirmpwd,  //密码验证
-						gender:this.gender,  //性别
-						check_code: this.check_code,  //验证码
-        4.数据入库
-        5.返回响应
     """
 
 import json
@@ -81,7 +69,7 @@ class RegistertView(View):
         phone = body_dict.get('phone')
         name = body_dict.get('name')
         stu_id = body_dict.get('stu_id')
-        stu_class = body_dict.get('stu_class')
+        stu_class = body_dict.get('class')
         password = body_dict.get('password')
         password2 = body_dict.get('password2')
         gender = body_dict.get('gender')
@@ -113,5 +101,12 @@ class RegistertView(View):
         # 密码加密：
         user = User.objects.create_user(username=username, password=password, mobile=phone, stu_id=stu_id,
                                         stu_class=stu_class, stu_name=name)
+        # django自带
+        from django.contrib.auth import login
+        # 登录用户的状态保持
+        login(request, user)
         # 5. 返回响应
         return JsonResponse({'code': 0, 'errmsg': 'ok'})
+
+
+# 需求是注册成功后表示用户认证通过；那么此时可以在注册成功后实现状态保持（即注册成功已经登录）状态保持
