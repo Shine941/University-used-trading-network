@@ -180,6 +180,7 @@ class LoginView(View):
         # 6. 返回响应
         response = JsonResponse({'code': 0, 'errmsg': 'ok'})
         # 为了首页显示用户信息
+        # max_age 不设置就是会话结束之后
         response.set_cookie('username', username)
 
         # 必须是登录后 合并
