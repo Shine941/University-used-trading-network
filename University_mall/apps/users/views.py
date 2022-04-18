@@ -145,7 +145,7 @@ class LoginView(View):
         # USERNAME_FIELD 我们可以根据 修改 User. USERNAME_FIELD 字段
         # 来影响authenticate 的查询
         # authenticate 就是根据 USERNAME_FIELD 来查询
-        if (re.match('1[3-9]\d{9}',username) and len(username)==11):
+        if (re.match('1[3-9]\d{9}', username) and len(username) == 11):
             User.USERNAME_FIELD = 'mobile'
         elif re.match('[0-9]{12}', username):
             User.USERNAME_FIELD = 'stu_id'
@@ -187,4 +187,28 @@ class LoginView(View):
         # from apps.carts.utils import merge_cookie_to_redis
         # response = merge_cookie_to_redis(request, response)
 
+        return response
+
+
+"""
+前端：
+    当用户点击退出按钮的时候，前端发送一个axios delete请求
+
+后端：
+    请求
+    业务逻辑        退出
+    响应      返回JSON数据
+
+"""
+from django.contrib.auth import logout
+
+
+class LogoutView(View):
+
+    def delete(self, request):
+        # 1. 删除session信息
+        logout(request)
+        response = JsonResponse({'code': 0, 'errmsg': 'ok'})
+        # 2. 删除cookie信息-前端是根据cookie信息判断用户是否登录的
+        response.delete_cookie('username')
         return response
