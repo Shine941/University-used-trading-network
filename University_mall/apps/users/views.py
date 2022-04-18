@@ -19,6 +19,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 
+# 用户名重名验证
 class UsernameCountView(View):
 
     def get(self, request, username):
@@ -36,28 +37,22 @@ class MobileCountView(View):
     def get(self, request, mobile):
         count = User.objects.filter(mobile=mobile).count()
         return JsonResponse({'code': 0, 'count': count, 'errmsg': 'ok'})
-    """
-    用户输入 用户名，密码，确认密码，手机号，是否同意协议后，会点击注册按钮
-        前端会发送axios请求
-    后端：
-        请求：接受请求，获取数据
-        业务逻辑：对前端数据进行验证，数据入库
-        响应：JSON{'code':0,'errmsg':'ok'}
-        路由： POST register/
-    步骤：
-        1.接受请求
-        2.获取数据
-        3.验证数据
-            3.1都要有
-            3.2用户名验证，不能重复
-            3.3密码满足规则
-            3.4确认密码和密码一致
-            3.5 手机号满足规则，手机号学号不能重复
-    """
 
+
+class StuNameCountView(View):
+    def get(self, request, stu_name):
+        count = User.objects.filter(stu_name=stu_name).count()
+        return JsonResponse({'code': 0, 'count': count, 'errmsg': 'ok'})
+
+
+class StuIdCountView(View):
+    def get(self, request, stu_id):
+        count = User.objects.filter(stu_id=stu_id).count()
+        print(count)
+        return JsonResponse({'code': 0, 'count': count, 'errmsg': 'ok'})
+
+# *********************注册***********************
 import json
-
-
 class RegistertView(View):
     def post(self, request):
         # 1.接受请求
@@ -107,6 +102,5 @@ class RegistertView(View):
         login(request, user)
         # 5. 返回响应
         return JsonResponse({'code': 0, 'errmsg': 'ok'})
-
 
 # 需求是注册成功后表示用户认证通过；那么此时可以在注册成功后实现状态保持（即注册成功已经登录）状态保持
