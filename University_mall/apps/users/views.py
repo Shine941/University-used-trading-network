@@ -11,15 +11,15 @@ from django.shortcuts import render
 业务逻辑：根据用户名查询数据库，如果查询结果的数量等于0,说明没有注册，如果查询的数量等于1；数排名有注册
 响应：JSON{ code:0,count:0/1,errmsg:ok }
 路由：GET     usernames/<username>/count/
-
 """
+
 from django.views import View
 from apps.users.models import User
 from django.http import JsonResponse
 from django.shortcuts import render
 
 
-# 用户名重名验证
+# ****************************************用户名重名验证******************************
 class UsernameCountView(View):
 
     def get(self, request, username):
@@ -32,6 +32,7 @@ class UsernameCountView(View):
         return JsonResponse({'code': 0, 'count': count, 'errmsg': 'ok'})
 
 
+# ****************************************手机号重复验证******************************
 class MobileCountView(View):
 
     def get(self, request, mobile):
@@ -39,12 +40,14 @@ class MobileCountView(View):
         return JsonResponse({'code': 0, 'count': count, 'errmsg': 'ok'})
 
 
+# ****************************************姓名重复验证******************************
 class StuNameCountView(View):
     def get(self, request, stu_name):
         count = User.objects.filter(stu_name=stu_name).count()
         return JsonResponse({'code': 0, 'count': count, 'errmsg': 'ok'})
 
 
+# ****************************************学号重复验证******************************
 class StuIdCountView(View):
     def get(self, request, stu_id):
         count = User.objects.filter(stu_id=stu_id).count()
@@ -52,7 +55,7 @@ class StuIdCountView(View):
         return JsonResponse({'code': 0, 'count': count, 'errmsg': 'ok'})
 
 
-# *********************注册***********************
+# ****************************************注册*************************************
 import json
 
 
@@ -85,7 +88,7 @@ class RegistertView(View):
         #     3.4确认密码和密码一致
         if password != password2:
             return JsonResponse({'code': 400, 'errmsg': '密码与确认密码不一致'})
-        #     3.5 手机号满足规则，手机号学号不能重复
+        #     3.5 学号不能重复
         if User.objects.filter(stu_id=stu_id).count():
             return JsonResponse({'code': 400, 'errmsg': '学号不能重复'})
         #     3.6 用户手机号不能重复
@@ -98,16 +101,14 @@ class RegistertView(View):
         # User.objects.create(username=username,password=password,mobile=phone,stu_id=stu_id,stu_class=stu_class,stu_name=name)
         # 密码加密：
         user = User.objects.create_user(username=username, password=password, mobile=phone, stu_id=stu_id,
-                                        stu_class=stu_class, stu_name=name)
+                                        stu_class=stu_class, stu_name=name, gender=gender)
         # django自带
         from django.contrib.auth import login
         # 登录用户的状态保持
+        # 需求是注册成功后表示用户认证通过；那么此时可以在注册成功后实现状态保持（即注册成功已经登录）状态保持
         login(request, user)
         # 5. 返回响应
         return JsonResponse({'code': 0, 'errmsg': 'ok'})
-
-
-# 需求是注册成功后表示用户认证通过；那么此时可以在注册成功后实现状态保持（即注册成功已经登录）状态保持
 
 
 """
@@ -117,7 +118,7 @@ class RegistertView(View):
 后端：
     请求    ：  接收数据，验证数据
     业务逻辑：   验证用户名和密码是否正确，session
-    响应    ： 返回JSON数据 0 成功。 400 失败
+    响应    ： JSON 0 成功。 400 失败
     POST        /login/
 步骤：
     1. 接收数据
@@ -129,6 +130,7 @@ class RegistertView(View):
 """
 
 
+# ****************************************登录******************************
 class LoginView(View):
 
     def post(self, request):
@@ -212,3 +214,42 @@ class LogoutView(View):
         # 2. 删除cookie信息-前端是根据cookie信息判断用户是否登录的
         response.delete_cookie('username')
         return response
+
+
+# 非登录用户不能访问个人主页
+"""
+LoginRequiredMixin 未登录的用户 会返回 重定向。重定向并不是JSON数据
+我们需要是  返回JSON数据
+"""
+from utils.views import LoginRequiredJSONMixin
+
+
+class CenterView(LoginRequiredJSONMixin, View):
+    def get(self, request):
+        # request.user来源于中间件，如果是已登录用户。可以直接获取登录用户的模型实例数据
+        # 如果不是登录用户，则是匿名用户
+        info_data = {
+            'username': request.user.username,
+            'mobile': request.user.mobile,
+            'stu_id': request.user.stu_id,
+            'stu_name': request.user.stu_name,
+            'stu_class': request.user.stu_class,
+            'gender': request.user.gender,
+        }
+        return JsonResponse({'code': 0, 'errmsg': 'ok', 'info_data': info_data})
+
+
+class ChangeInfoView(LoginRequiredJSONMixin, View):
+    def put(self, request):
+        data = json.loads(request.body.decode())
+        mobile = data.get('mobile')
+        username = data.get('username')
+        gender = data.get('gender')
+        if not all([username, mobile, gender]):
+            return JsonResponse({'code': 400, 'errmsg': '参数不全'})
+        user = request.user
+        user.username = username
+        user.mobile = mobile
+        user.gender = gender
+        user.save()
+        return JsonResponse({'code': 0, 'errmsg': 'ok'})

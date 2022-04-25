@@ -6,8 +6,6 @@ from django.shortcuts import render
 """
 前端
      拼接一个 url 。然后给 img 。img会发起请求
-     url=http://mp-meiduo-python.itheima.net/image_codes/ca732354-08d0-416d-823b-14b1d77746d2/
-     url=http://ip:port/image_codes/uuid
 后端
     请求              接收路由中的 uuid
     业务逻辑          生成图片验证码和图片二进制。通过redis把图片验证码保存起来
@@ -22,6 +20,7 @@ from django.shortcuts import render
 """
 # Create your views here.
 from django.views import View
+
 
 # 图片验证码生成与验证
 class ImageCodeView(View):
@@ -59,6 +58,7 @@ class ImageCodeView(View):
         if redis_image_code.decode().lower() != image_code.lower():
             return JsonResponse({'code': 400, 'errmsg': '图片验证码错误'})
         return JsonResponse({'code': 0, 'errmsg': 'ok'})
+
 
 '''
 前端

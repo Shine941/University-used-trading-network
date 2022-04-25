@@ -10,6 +10,8 @@ class User(AbstractUser):
     stu_class = models.CharField(max_length=20, unique=False)  # 班级
     stu_name = models.CharField(max_length=20, unique=False)  # 姓名
     gender = models.CharField(max_length=20, unique=False)  # 性别
+
+    # photo = models.ImageField('照片', upload_to=user_directory_path, blank=True, null=True)
     class Meta:  # 修改表名为tb_user，默认是auth_user
         db_table = 'tb_users'
         verbose_name = '用户管理'

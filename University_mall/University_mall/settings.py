@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'apps.users',
     'apps.chat',
     'apps.verifications',
+    'apps.goods',
+    'apps.comments',
     'channels',
     # CORS
     'corsheaders',
