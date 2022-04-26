@@ -202,6 +202,7 @@ class LoginView(View):
     响应      返回JSON数据
 
 """
+#  ****************************************退出******************************
 from django.contrib.auth import logout
 
 
@@ -235,11 +236,13 @@ class CenterView(LoginRequiredJSONMixin, View):
             'stu_name': request.user.stu_name,
             'stu_class': request.user.stu_class,
             'gender': request.user.gender,
+            'avatar': request.user.avatar.url,
         }
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'info_data': info_data})
 
 
 class ChangeInfoView(LoginRequiredJSONMixin, View):
+    #  ****************************************修改用户信息******************************
     def put(self, request):
         data = json.loads(request.body.decode())
         mobile = data.get('mobile')
@@ -253,3 +256,29 @@ class ChangeInfoView(LoginRequiredJSONMixin, View):
         user.gender = gender
         user.save()
         return JsonResponse({'code': 0, 'errmsg': 'ok'})
+
+
+#  ****************************************修改用户头像********************************
+
+class ChangeAvatarView(LoginRequiredJSONMixin, View):
+    def put(self, request):
+        data = request.body.decode()
+        import os, base64
+        data = data.split(',')[1]
+        imgdata = base64.urlsafe_b64decode(data)
+        file = open('1.jpg', "wb")
+        file.write(imgdata)
+        file.close()
+        file_address = os.getcwd() + '/1.jpg'
+        # 上传图片代码测试
+        from fdfs_client.client import Fdfs_client
+        # 修改加载配置文件的路径
+        client = Fdfs_client('utils/fastdfs/client.conf')
+        name = client.upload_by_filename(file_address)
+        img_name = name.get('Remote file_id')
+        #  存入图片
+        user = request.user
+        user.avatar = img_name
+        print(user.avatar.url)
+        user.save()
+        return JsonResponse({'code': 0, 'errmsg': 'ok','avatar':user.avatar.url})

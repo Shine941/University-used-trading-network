@@ -1,6 +1,6 @@
 from django.urls import path
 from apps.users.views import UsernameCountView, RegistertView, MobileCountView,StuIdCountView,\
-    StuNameCountView,LoginView,LogoutView,CenterView,ChangeInfoView
+    StuNameCountView,LoginView,LogoutView,CenterView,ChangeInfoView,ChangeAvatarView
 
 urlpatterns = {
     # 判断用户名是否重复
@@ -16,4 +16,5 @@ urlpatterns = {
     path('logout/',LogoutView.as_view()),
     path('userinfo/',CenterView.as_view()),
     path('changeinfo/',ChangeInfoView.as_view()),
+    path('avaupload/',ChangeAvatarView.as_view()),
 }
