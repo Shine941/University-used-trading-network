@@ -47,5 +47,6 @@ urlpatterns = [
     path('chat/', views.chat),
     # 导入users子应用的路由
     path('', include('apps.users.urls')),
-    path('', include('apps.verifications.urls'))
+    path('', include('apps.verifications.urls')),
+    path('',include('apps.goods.urls')),
 ]

@@ -216,7 +216,7 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:8080',
 )
 CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
-DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 单位为字节，现在设置为8M
+DATA_UPLOAD_MAX_MEMORY_SIZE = 20971520  # 单位为字节，现在设置为20M
 
 #########加载自定义文件存储类#######################
 # 指定自定义的Django文件存储类
