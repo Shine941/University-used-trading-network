@@ -32,8 +32,9 @@ class Goods(BaseModel):
     visits = models.IntegerField(default=0, verbose_name='浏览量')
     collect_num = models.IntegerField(default=0, verbose_name='收藏量')
     is_launched = models.BooleanField(default=True, verbose_name='是否上架销售')
-    Buyers = models.ForeignKey('users.User', default='', on_delete=models.SET_DEFAULT, verbose_name='买家', related_name="goods_buyer")
+    Buyers = models.ForeignKey('users.User', null=True, on_delete=models.SET_NULL, verbose_name='买家', related_name="goods_buyer")
     word = models.TextField(verbose_name='文字介绍')
+    defaultimg = models.ImageField(verbose_name='默认图片')
 
     class Meta:
         db_table = 'tb_goods'

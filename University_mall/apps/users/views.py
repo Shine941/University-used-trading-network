@@ -279,6 +279,6 @@ class ChangeAvatarView(LoginRequiredJSONMixin, View):
         #  存入图片
         user = request.user
         user.avatar = img_name
-        print(user.avatar.url)
+        # print(user.avatar.url)
         user.save()
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'avatar': user.avatar.url})

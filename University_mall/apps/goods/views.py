@@ -33,7 +33,10 @@ import json, re
 from fdfs_client.client import Fdfs_client
 from django.http import JsonResponse
 import os, base64
+from collections import OrderedDict
 
+
+# ****************************************************新建商品*****
 class GoodsCenterView(LoginRequiredJSONMixin, View):
     def post(self, request):
         # request.user来源于中间件，如果是已登录用户。可以直接获取登录用户的模型实例数据
@@ -42,16 +45,35 @@ class GoodsCenterView(LoginRequiredJSONMixin, View):
         body_str = request.body.decode()
         body_dict = json.loads(body_str)
         # 2.获取数据
-        user_id = request.user.id
-        username = body_dict.get('username')
         goods_img = body_dict.get('goods_img')
         goods_title = body_dict.get('goods_title')
         goods_price = body_dict.get('goods_price')
         goods_text = body_dict.get('goods_text')
-        goods_category = body_dict.get('goods_category')
+        goods_price = float(goods_price)
+        goods_category = int(body_dict.get('goods_category'))
+        category = GoodsCategory.objects.get(id=goods_category)
+        # 设置默认图片
+        b = goods_img[0]
+        defimg = b.split(',')[1]
+        imgdata = base64.urlsafe_b64decode(defimg)
+        file = open('1.jpg', "wb")
+        file.write(imgdata)
+        file.close()
+        file_address = os.getcwd() + '/1.jpg'
+        client = Fdfs_client('utils/fastdfs/client.conf')
+        name = client.upload_by_filename(file_address)
+        img_name = name.get('Remote file_id')
+        goods = Goods(
+            name=goods_title,
+            price=goods_price,
+            word=goods_text,
+            defaultimg=img_name,
+        )
+        goods.category = category
+        goods.user = request.user
+        goods.save()
         for a in goods_img:
             a = a.split(',')[1]
-            # print(a)
             imgdata = base64.urlsafe_b64decode(a)
             file = open('1.jpg', "wb")
             file.write(imgdata)
@@ -60,32 +82,31 @@ class GoodsCenterView(LoginRequiredJSONMixin, View):
             client = Fdfs_client('utils/fastdfs/client.conf')
             name = client.upload_by_filename(file_address)
             img_name = name.get('Remote file_id')
-            print(img_name)
-        print(goods_category)
-        print(goods_text)
-        print(goods_title)
-        # # 3.验证数据
-        # #     3.1都要有
-        # #     all里面的元素只要是None就返回false
-        # if not all([username, password, phone, name, stu_id, password2, gender]):
-        #     return JsonResponse({'code': 400, 'errmsg': '参数不全'})
-        # #     3.3密码非空
-        # #     3.4确认密码和密码一致
-        # if password != password2:
-        #     return JsonResponse({'code': 400, 'errmsg': '密码与确认密码不一致'})
-        # #     3.5 学号不能重复
-        # if User.objects.filter(stu_id=stu_id).count():
-        #     return JsonResponse({'code': 400, 'errmsg': '学号不能重复'})
-        # #     3.6 用户手机号不能重复
-        # if User.objects.filter(mobile=phone).count():
-        #     return JsonResponse({'code': 400, 'errmsg': '手机号不能重复'})
-        # #    3.7 学号只能是12位
-        # if len(stu_id) != 12:
-        #     return JsonResponse({'code': 400, 'errmsg': '学号输入错误'})
-        #  4.数据入库
-        # User.objects.create(username=username,password=password,mobile=phone,stu_id=stu_id,stu_class=stu_class,stu_name=name)
-        # 密码加密：
-        #user = User.objects.create_user(username=username, password=password, mobile=phone, stu_id=stu_id,
-        #                                stu_class=stu_class, stu_name=name, gender=gender)
-        # 5. 返回响应
+            img = GoodsImage(
+                image=img_name
+            )
+            img.goods = goods
+            img.save()
         return JsonResponse({'code': 0, 'errmsg': 'ok'})
+
+
+class GetGoodsAllView(LoginRequiredJSONMixin, View):
+    def get(self, request):
+        goods_data = []
+        goodsAll = Goods.objects.filter(is_launched=True).order_by('-update_title')
+        for goods in goodsAll:
+            username = goods.user.username
+            goods_data.append({
+                'username': username,
+                'useravatar': goods.user.avatar.url,
+                'category': goods.category.name,
+                'title': goods.name,
+                'comments': goods.comments,
+                'likes': goods.likes,
+                'price': goods.price,
+                'collects': goods.collect_num,
+                'text': goods.word,
+                'defaultimg': goods.defaultimg.url,
+                'time': goods.update_title,
+            })
+        return JsonResponse({'code': 0, 'errmsg': 'ok', 'goodsAll': goods_data})
