@@ -41,8 +41,8 @@ INSTALLED_APPS = [
     'apps.goods',
     'apps.comments',
     'channels',
-    # CORS
-    'corsheaders',
+    'corsheaders',  # CORS
+    'haystack',  # haystack
 ]
 
 MIDDLEWARE = [
@@ -221,3 +221,14 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 20971520  # 单位为字节，现在设置为20M
 #########加载自定义文件存储类#######################
 # 指定自定义的Django文件存储类
 DEFAULT_FILE_STORAGE = 'utils.fastdfs.storage.MyStorage'
+
+
+
+# Haystack
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/', # Elasticsearch服务器ip地址，端口号固定为9200
+        'INDEX_NAME': 'univwesity_mall', # Elasticsearch建立的索引库的名称
+    },
+}

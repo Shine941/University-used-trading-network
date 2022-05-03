@@ -16,8 +16,7 @@ from django.shortcuts import render
 from django.views import View
 from apps.users.models import User
 from django.http import JsonResponse
-from django.shortcuts import render
-
+from django.contrib.auth import login
 
 # ****************************************用户名重名验证******************************
 class UsernameCountView(View):
@@ -37,13 +36,6 @@ class MobileCountView(View):
 
     def get(self, request, mobile):
         count = User.objects.filter(mobile=mobile).count()
-        return JsonResponse({'code': 0, 'count': count, 'errmsg': 'ok'})
-
-
-# ****************************************姓名重复验证******************************
-class StuNameCountView(View):
-    def get(self, request, stu_name):
-        count = User.objects.filter(stu_name=stu_name).count()
         return JsonResponse({'code': 0, 'count': count, 'errmsg': 'ok'})
 
 
@@ -102,8 +94,6 @@ class RegistertView(View):
         # 密码加密：
         user = User.objects.create_user(username=username, password=password, mobile=phone, stu_id=stu_id,
                                         stu_class=stu_class, stu_name=name, gender=gender)
-        # django自带
-        from django.contrib.auth import login
         # 登录用户的状态保持
         # 需求是注册成功后表示用户认证通过；那么此时可以在注册成功后实现状态保持（即注册成功已经登录）状态保持
         login(request, user)
@@ -144,8 +134,7 @@ class LoginView(View):
             return JsonResponse({'code': 400, 'errmsg': '参数不全'})
 
         # 确定 我们是根据手机号查询 还是 根据用户名查询
-        # USERNAME_FIELD 我们可以根据 修改 User. USERNAME_FIELD 字段
-        # 来影响authenticate 的查询
+        # 我们可以根据 修改 User. USERNAME_FIELD 字段来影响authenticate 的查询
         # authenticate 就是根据 USERNAME_FIELD 来查询
         if (re.match('1[3-9]\d{9}', username) and len(username) == 11):
             User.USERNAME_FIELD = 'mobile'
@@ -161,12 +150,11 @@ class LoginView(View):
         # 如果用户名和密码正确，则返回 User信息
         # 如果用户名和密码不正确，则返回 None
         user = authenticate(username=username, password=password)
-        print(user)
+        # print(user)
         if user is None:
             return JsonResponse({'code': 400, 'errmsg': '账号或密码错误'})
 
         # 4. session 状态保持
-        from django.contrib.auth import login
         login(request, user)
 
         # 5. 判断是否记住登录
@@ -255,11 +243,27 @@ class ChangeInfoView(LoginRequiredJSONMixin, View):
         user.mobile = mobile
         user.gender = gender
         user.save()
-        return JsonResponse({'code': 0, 'errmsg': 'ok'})
+        response =JsonResponse({'code': 0, 'errmsg': 'ok'})
+        login(request, user)
+        request.session.set_expiry(None)
+        response.set_cookie('username', username)
+        return response
 
 
 #  ****************************************修改用户头像********************************
-
+############上传图片的代码################################
+# from fdfs_client.client import Fdfs_client
+#
+# # 1. 创建客户端
+# # 修改加载配置文件的路径
+# client=Fdfs_client('utils/fastdfs/client.conf')
+#
+# # 2. 上传图片
+# # 图片的绝对路径
+# name=client.upload_by_filename('/home/malifei-py/图片/QQ═╝╞¼20220322184033.jpg')
+# img_name = name.get('Remote file_id')
+# 3. 获取file_id .upload_by_filename 上传成功会返回字典数据
+# 字典数据中 有file_id
 class ChangeAvatarView(LoginRequiredJSONMixin, View):
     def put(self, request):
         data = request.body.decode()
@@ -270,7 +274,6 @@ class ChangeAvatarView(LoginRequiredJSONMixin, View):
         file.write(imgdata)
         file.close()
         file_address = os.getcwd() + '/1.jpg'
-        # 上传图片代码测试
         from fdfs_client.client import Fdfs_client
         # 修改加载配置文件的路径
         client = Fdfs_client('utils/fastdfs/client.conf')

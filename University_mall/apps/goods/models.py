@@ -1,6 +1,6 @@
 from django.db import models
 from utils.models import BaseModel
-
+from apps.users.models import User
 
 # Create your models here.
 
