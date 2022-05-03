@@ -67,6 +67,7 @@ class GoodsCenterView(LoginRequiredJSONMixin, View):
             img.save()
         return JsonResponse({'code': 0, 'errmsg': 'ok'})
 
+
 class ConGoodsView(View):
     def delete(self, request):
         print("到这了")
@@ -78,7 +79,7 @@ class ConGoodsView(View):
             goods.is_launched = False
             return JsonResponse({'code': 0, 'errmsg': 'ok'})
         else:
-            return JsonResponse({'code':400,'errmsg':'失误'})
+            return JsonResponse({'code': 400, 'errmsg': '失误'})
 
 
 class GoodsAllView(LoginRequiredJSONMixin, View):
@@ -104,7 +105,7 @@ class GoodsAllView(LoginRequiredJSONMixin, View):
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'goodsAll': goods_data})
 
 
-class OnlineGoodsView(LoginRequiredJSONMixin,View):
+class OnlineGoodsView(LoginRequiredJSONMixin, View):
     def get(self, request):
         goods_data = []
         goodsOnline = Goods.objects.filter(Q(is_launched=True) & Q(category__parent_id=1)).order_by('-update_time')
@@ -149,13 +150,14 @@ class OfflineGoodsView(LoginRequiredJSONMixin, View):
             })
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'goods': goods_data})
 
+
 class MyGoodsView(LoginRequiredJSONMixin, View):
     def get(self, request):
         goods_data = []
         id = request.user.id
         username = request.user.username
         avatar = request.user.avatar.url
-        Mygoods = Goods.objects.filter(Q(user_id=id)&Q(is_launched=True)).order_by('-update_time')
+        Mygoods = Goods.objects.filter(Q(user_id=id) & Q(is_launched=True)).order_by('-update_time')
         for goods in Mygoods:
             goods_data.append({
                 'id': goods.id,
@@ -172,13 +174,14 @@ class MyGoodsView(LoginRequiredJSONMixin, View):
             })
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'mygoods': goods_data})
 
-class MySoldView(LoginRequiredJSONMixin,View):
-    def get(self,request):
+
+class MySoldView(LoginRequiredJSONMixin, View):
+    def get(self, request):
         goods_data = []
         id = request.user.id
         username = request.user.username
         avatar = request.user.avatar.url
-        Mygoods = Goods.objects.filter(Q(user_id=id)&Q(is_launched=False)).order_by('-update_time')
+        Mygoods = Goods.objects.filter(Q(user_id=id) & Q(is_launched=False)).order_by('-update_time')
         for goods in Mygoods:
             goods_data.append({
                 'id': goods.id,
@@ -194,6 +197,7 @@ class MySoldView(LoginRequiredJSONMixin,View):
                 'time': goods.update_time.date(),
             })
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'mygoods': goods_data})
+
 
 class MyBoughtView(LoginRequiredJSONMixin, View):
     def get(self, request):
@@ -201,7 +205,7 @@ class MyBoughtView(LoginRequiredJSONMixin, View):
         id = request.user.id
         username = request.user.username
         avatar = request.user.avatar.url
-        Mygoods = Goods.objects.filter(Q(user_id=id)&Q(is_launched=True)).order_by('-update_time')
+        Mygoods = Goods.objects.filter(Q(user_id=id) & Q(is_launched=True)).order_by('-update_time')
         for goods in Mygoods:
             goods_data.append({
                 'id': goods.id,
@@ -218,13 +222,14 @@ class MyBoughtView(LoginRequiredJSONMixin, View):
             })
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'goods': goods_data})
 
+
 class MyCollectView(LoginRequiredJSONMixin, View):
     def get(self, request):
         goods_data = []
         id = request.user.id
         username = request.user.username
         avatar = request.user.avatar.url
-        Mygoods = Goods.objects.filter(Q(user_id=id)&Q(is_launched=True)).order_by('-update_time')
+        Mygoods = Goods.objects.filter(Q(user_id=id) & Q(is_launched=True)).order_by('-update_time')
         for goods in Mygoods:
             goods_data.append({
                 'id': goods.id,
@@ -240,3 +245,32 @@ class MyCollectView(LoginRequiredJSONMixin, View):
                 'time': goods.update_time.date(),
             })
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'goods': goods_data})
+
+
+from haystack.views import SearchView
+
+
+class SearchGoodsView(SearchView):
+    def create_response(self):
+        # 获取搜索结果
+        context = self.get_context()
+        goodslist=[]
+        # 我们该如何知道里面有什么数据呢
+        for item in context['page'].object_list:
+            goodslist.append({
+                'id':item.object.id,
+                'username': item.object.user.username,
+                'useravatar': item.object.user.avatar.url,
+                'title':item.object.name,
+                'comments': item.object.comments,
+                'likes': item.object.likes,
+                'price': item.object.price,
+                'collects': item.object.collect_num,
+                'text': item.object.word,
+                'defaultimg': item.object.defaultimg.url,
+                'time': item.object.update_time.date(),
+                'searchkey': context.get('query'),
+                'page_size': context['page'].paginator.num_pages,
+                'count': context['page'].paginator.count,
+            })
+        return JsonResponse(goodslist,safe=False)

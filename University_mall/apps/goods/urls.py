@@ -1,6 +1,6 @@
 from django.urls import path
 from apps.goods.views import GoodsCenterView,GoodsAllView,OnlineGoodsView,MyGoodsView,OfflineGoodsView,ConGoodsView
-from apps.goods.views import MyBoughtView,MySoldView,MyCollectView
+from apps.goods.views import MyBoughtView,MySoldView,MyCollectView,SearchGoodsView
 urlpatterns = {
     # 判断用户名是否重复
     path('newgoods/', GoodsCenterView.as_view()),
@@ -11,5 +11,7 @@ urlpatterns = {
     path('controlgoods/',ConGoodsView.as_view()),
     path('MySolds/', MySoldView.as_view()),
     path('MyBought/', MyBoughtView.as_view()),
-    path('MyCollect/', MyCollectView.as_view())
+    path('MyCollect/', MyCollectView.as_view()),
+    path('search/', SearchGoodsView()),
+
 }
