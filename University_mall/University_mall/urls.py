@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.http import HttpResponse
-from apps.chat import views
 
 
 def log(request):
@@ -44,9 +43,9 @@ register_converter(StunameConverter, 'stu_name')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('log/', log),
-    path('chat/', views.chat),
     # 导入users子应用的路由
     path('', include('apps.users.urls')),
     path('', include('apps.verifications.urls')),
     path('',include('apps.goods.urls')),
+    path('',include('apps.chat.urls')),
 ]

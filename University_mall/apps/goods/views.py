@@ -69,17 +69,11 @@ class GoodsCenterView(LoginRequiredJSONMixin, View):
 
 
 class ConGoodsView(View):
-    def delete(self, request):
+    def delete(self, request, goodsid):
         print("到这了")
-        data = json.loads(request.body.decode())
-        if (data):
-            print(data)
-            print(type(data))
-            goods = Goods.objects.get(id=data)
-            goods.is_launched = False
-            return JsonResponse({'code': 0, 'errmsg': 'ok'})
-        else:
-            return JsonResponse({'code': 400, 'errmsg': '失误'})
+        goods = Goods.objects.get(id=goodsid)
+        goods.is_launched = False
+        return JsonResponse({'code': 0, 'errmsg': 'ok'})
 
 
 class GoodsAllView(LoginRequiredJSONMixin, View):
@@ -90,8 +84,9 @@ class GoodsAllView(LoginRequiredJSONMixin, View):
             username = goods.user.username
             goods_data.append({
                 'username': username,
-                'goodsuser': goods.user.id,
+                'chaturl': '/chatting.html?q=%d' % goods.user.id,
                 'useravatar': goods.user.avatar.url,
+                'url': '/detail.html?q=%d' % goods.id,
                 'category': goods.category.name,
                 'title': goods.name,
                 'comments': goods.comments,
@@ -236,6 +231,7 @@ class MyCollectView(LoginRequiredJSONMixin, View):
                 'username': username,
                 'useravatar': avatar,
                 'title': goods.name,
+                'stuid': goods.user.stu_id,
                 'comments': goods.comments,
                 'likes': goods.likes,
                 'price': goods.price,
@@ -254,14 +250,14 @@ class SearchGoodsView(SearchView):
     def create_response(self):
         # 获取搜索结果
         context = self.get_context()
-        goodslist=[]
+        goodslist = []
         # 我们该如何知道里面有什么数据呢
         for item in context['page'].object_list:
             goodslist.append({
-                'id':item.object.id,
+                'id': item.object.id,
                 'username': item.object.user.username,
                 'useravatar': item.object.user.avatar.url,
-                'title':item.object.name,
+                'title': item.object.name,
                 'comments': item.object.comments,
                 'likes': item.object.likes,
                 'price': item.object.price,
@@ -273,4 +269,29 @@ class SearchGoodsView(SearchView):
                 'page_size': context['page'].paginator.num_pages,
                 'count': context['page'].paginator.count,
             })
-        return JsonResponse(goodslist,safe=False)
+        return JsonResponse(goodslist, safe=False)
+
+
+class DetailView(View):
+    def get(self, request, goodsid):
+        goodsid = int(goodsid)
+        image = []
+        goods = Goods.objects.get(id=goodsid)
+        images = goods.goodsimage_set.all()
+        for img in images:
+            image.append(img.image.url)
+        goods_data = {
+            'id': goods.id,
+            'username': goods.user.username,
+            'stuid': goods.user.stu_id,
+            'useravatar': goods.user.avatar.url,
+            'title': goods.name,
+            'comments': goods.comments,
+            'likes': goods.likes,
+            'price': goods.price,
+            'collects': goods.collect_num,
+            'text': goods.word,
+            'images': image,
+            'time': goods.update_time.date(),
+        }
+        return JsonResponse({'code': 0, 'errmsg': 'ok', 'goods': goods_data})
