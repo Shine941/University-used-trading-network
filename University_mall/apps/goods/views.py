@@ -7,7 +7,7 @@ from fdfs_client.client import Fdfs_client
 client = Fdfs_client('utils/fastdfs/client.conf')
 from apps.goods.models import Goods, GoodsImage, GoodsVisitCount, GoodsCategory
 from utils.views import LoginRequiredJSONMixin
-import json, re
+import json
 from fdfs_client.client import Fdfs_client
 import os, base64
 from django.views import View
@@ -84,7 +84,7 @@ class GoodsAllView(LoginRequiredJSONMixin, View):
             username = goods.user.username
             goods_data.append({
                 'username': username,
-                'chaturl': '/chatting.html?q=%d' % goods.user.id,
+                'chaturl': '/chatting.html?q=%d' % goods.id,
                 'useravatar': goods.user.avatar.url,
                 'url': '/detail.html?q=%d' % goods.id,
                 'category': goods.category.name,
@@ -283,6 +283,7 @@ class DetailView(View):
         goods_data = {
             'id': goods.id,
             'username': goods.user.username,
+            'stuname': goods.user.stu_name,
             'stuid': goods.user.stu_id,
             'useravatar': goods.user.avatar.url,
             'title': goods.name,
@@ -295,3 +296,4 @@ class DetailView(View):
             'time': goods.update_time.date(),
         }
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'goods': goods_data})
+

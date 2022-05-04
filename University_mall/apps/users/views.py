@@ -211,7 +211,7 @@ LoginRequiredMixin 未登录的用户 会返回 重定向。重定向并不是JS
 我们需要是  返回JSON数据
 """
 from utils.views import LoginRequiredJSONMixin
-
+# ****************************************获取用户信息******************************
 
 class CenterView(LoginRequiredJSONMixin, View):
     def get(self, request):

@@ -1,8 +1,7 @@
 from django.shortcuts import render
-
-
+from django.views import View
 # Create your views here.
 class ChatCenterView(View):
-    def chat(request):
-        grop_num = request.GET.get('group')
+    def get(self,request):
+        grop_num = request.get('group')
         return render(request, 'chatting.html', {"group_num": grop_num})
