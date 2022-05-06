@@ -32,7 +32,7 @@ def log(request):
 
 
 # 注册转换器
-from utils.converters import UsernameConverter,MobileConverter,StuidConverter,StunameConverter
+from utils.converters import UsernameConverter,MobileConverter,StuidConverter,StunameConverter,UseridConverter
 from django.urls import register_converter
 
 # 转换器的类；转换器的名字
@@ -40,6 +40,7 @@ register_converter(UsernameConverter, 'username')
 register_converter(MobileConverter, 'mobile')
 register_converter(StuidConverter, 'stu_id')
 register_converter(StunameConverter, 'stu_name')
+register_converter(UseridConverter, 'userid')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('log/', log),

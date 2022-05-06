@@ -79,12 +79,13 @@ class ConGoodsView(View):
 class GoodsAllView(LoginRequiredJSONMixin, View):
     def get(self, request):
         goods_data = []
+        userid=request.user.id
         goodsAll = Goods.objects.filter(is_launched=True).order_by('-update_time')
         for goods in goodsAll:
             username = goods.user.username
             goods_data.append({
                 'username': username,
-                'chaturl': '/chatting.html?q=%d' % goods.id,
+                'chaturl': '/chatting.html?q=%d-%d' % (goods.id,userid),
                 'useravatar': goods.user.avatar.url,
                 'url': '/detail.html?q=%d' % goods.id,
                 'category': goods.category.name,
@@ -283,6 +284,7 @@ class DetailView(View):
         goods_data = {
             'id': goods.id,
             'username': goods.user.username,
+            'class':goods.user.stu_class,
             'stuname': goods.user.stu_name,
             'stuid': goods.user.stu_id,
             'useravatar': goods.user.avatar.url,

@@ -211,13 +211,14 @@ LoginRequiredMixin 未登录的用户 会返回 重定向。重定向并不是JS
 我们需要是  返回JSON数据
 """
 from utils.views import LoginRequiredJSONMixin
-# ****************************************获取用户信息******************************
+# ****************************************获取我的用户信息******************************
 
 class CenterView(LoginRequiredJSONMixin, View):
     def get(self, request):
         # request.user来源于中间件，如果是已登录用户。可以直接获取登录用户的模型实例数据
         # 如果不是登录用户，则是匿名用户
         info_data = {
+            'id': request.user.id,
             'username': request.user.username,
             'mobile': request.user.mobile,
             'stu_id': request.user.stu_id,
@@ -285,3 +286,20 @@ class ChangeAvatarView(LoginRequiredJSONMixin, View):
         # print(user.avatar.url)
         user.save()
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'avatar': user.avatar.url})
+
+
+
+class UserIdInfoView(View):
+    def get(self, request, userid):
+        userid = int(userid)
+        user = User.objects.get(id=userid)
+        info_data = {
+            'username': user.username,
+            'mobile': user.mobile,
+            'stu_id': user.stu_id,
+            'stu_name': user.stu_name,
+            'stu_class': user.stu_class,
+            'gender': user.gender,
+            'avatar': user.avatar.url,
+        }
+        return JsonResponse({'code': 0, 'errmsg': 'ok', 'info_data': info_data})
