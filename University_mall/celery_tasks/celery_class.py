@@ -3,6 +3,7 @@ class Broker(object):
     # 任务队列
     broker_list = []
 
+
 # 消费者
 class Worker(object):
     # 任务执行者
@@ -12,6 +13,7 @@ class Worker(object):
             func()
         else:
             return 'error'
+
 
 # Celery 将这3者 串联起来了
 class Celery(object):
@@ -23,15 +25,16 @@ class Celery(object):
         self.broker.broker_list.append(func)
 
     def work(self, func):
-        self.worker.run(self.broker,func)
+        self.worker.run(self.broker, func)
 
 
 # 任务（函数），生产者
 def send_sms_code():
     print('send_sms_code')
 
+
 # 1.创建celery实例
-app=Celery()
+app = Celery()
 # 2. 添加任务
 app.add(send_sms_code)
 # 3.执行任务

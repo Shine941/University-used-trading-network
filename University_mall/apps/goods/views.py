@@ -12,7 +12,6 @@ from fdfs_client.client import Fdfs_client
 import os, base64
 from django.views import View
 from django.http import JsonResponse
-from django.contrib.auth import login
 
 
 # ****************************************************新建商品*****
@@ -68,85 +67,17 @@ class GoodsCenterView(LoginRequiredJSONMixin, View):
         return JsonResponse({'code': 0, 'errmsg': 'ok'})
 
 
+# ****************************************************删除商品*****
 class ConGoodsView(View):
     def delete(self, request, goodsid):
         print("到这了")
         goods = Goods.objects.get(id=goodsid)
         goods.is_launched = False
+        goods.save()
         return JsonResponse({'code': 0, 'errmsg': 'ok'})
 
 
-class GoodsAllView(LoginRequiredJSONMixin, View):
-    def get(self, request):
-        goods_data = []
-        userid=request.user.id
-        goodsAll = Goods.objects.filter(is_launched=True).order_by('-update_time')
-        for goods in goodsAll:
-            username = goods.user.username
-            goods_data.append({
-                'username': username,
-                'chaturl': '/chatting.html?q=%d-%d' % (goods.id,userid),
-                'useravatar': goods.user.avatar.url,
-                'url': '/detail.html?q=%d' % goods.id,
-                'category': goods.category.name,
-                'title': goods.name,
-                'comments': goods.comments,
-                'likes': goods.likes,
-                'price': goods.price,
-                'collects': goods.collect_num,
-                'text': goods.word,
-                'defaultimg': goods.defaultimg.url,
-                'time': goods.update_time.date(),
-            })
-        return JsonResponse({'code': 0, 'errmsg': 'ok', 'goodsAll': goods_data})
-
-
-class OnlineGoodsView(LoginRequiredJSONMixin, View):
-    def get(self, request):
-        goods_data = []
-        goodsOnline = Goods.objects.filter(Q(is_launched=True) & Q(category__parent_id=1)).order_by('-update_time')
-        for goods in goodsOnline:
-            username = goods.user.username
-            goods_data.append({
-                'username': username,
-                'goodsuser': goods.user.id,
-                'useravatar': goods.user.avatar.url,
-                'category': goods.category.name,
-                'title': goods.name,
-                'comments': goods.comments,
-                'likes': goods.likes,
-                'price': goods.price,
-                'collects': goods.collect_num,
-                'text': goods.word,
-                'defaultimg': goods.defaultimg.url,
-                'time': goods.update_time.date(),
-            })
-        return JsonResponse({'code': 0, 'errmsg': 'ok', 'goods': goods_data})
-
-
-class OfflineGoodsView(LoginRequiredJSONMixin, View):
-    def get(self, request):
-        goods_data = []
-        Offline = Goods.objects.filter(Q(is_launched=True) & Q(category__parent_id=2)).order_by('-update_time')
-        for goods in Offline:
-            username = goods.user.username
-            goods_data.append({
-                'username': username,
-                'goodsuser': goods.user.id,
-                'useravatar': goods.user.avatar.url,
-                'category': goods.category.name,
-                'title': goods.name,
-                'comments': goods.comments,
-                'likes': goods.likes,
-                'price': goods.price,
-                'collects': goods.collect_num,
-                'text': goods.word,
-                'defaultimg': goods.defaultimg.url,
-                'time': goods.update_time.date(),
-            })
-        return JsonResponse({'code': 0, 'errmsg': 'ok', 'goods': goods_data})
-
-
+# ****************************************************我的商品*****
 class MyGoodsView(LoginRequiredJSONMixin, View):
     def get(self, request):
         goods_data = []
@@ -166,11 +97,12 @@ class MyGoodsView(LoginRequiredJSONMixin, View):
                 'collects': goods.collect_num,
                 'text': goods.word,
                 'defaultimg': goods.defaultimg.url,
-                'time': goods.update_time.date(),
+                'time': str(goods.update_time.date()) + '  ' + (str(goods.update_time.time()))[0:8],
             })
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'mygoods': goods_data})
 
 
+# ****************************************************我的卖出*****
 class MySoldView(LoginRequiredJSONMixin, View):
     def get(self, request):
         goods_data = []
@@ -190,11 +122,12 @@ class MySoldView(LoginRequiredJSONMixin, View):
                 'collects': goods.collect_num,
                 'text': goods.word,
                 'defaultimg': goods.defaultimg.url,
-                'time': goods.update_time.date(),
+                'time': str(goods.update_time.date()) + '  ' + (str(goods.update_time.time()))[0:8],
             })
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'mygoods': goods_data})
 
 
+# ****************************************************我的已购*****
 class MyBoughtView(LoginRequiredJSONMixin, View):
     def get(self, request):
         goods_data = []
@@ -214,11 +147,12 @@ class MyBoughtView(LoginRequiredJSONMixin, View):
                 'collects': goods.collect_num,
                 'text': goods.word,
                 'defaultimg': goods.defaultimg.url,
-                'time': goods.update_time.date(),
+                'time': str(goods.update_time.date()) + '  ' + (str(goods.update_time.time()))[0:8],
             })
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'goods': goods_data})
 
 
+# ****************************************************我的收藏*****
 class MyCollectView(LoginRequiredJSONMixin, View):
     def get(self, request):
         goods_data = []
@@ -239,23 +173,94 @@ class MyCollectView(LoginRequiredJSONMixin, View):
                 'collects': goods.collect_num,
                 'text': goods.word,
                 'defaultimg': goods.defaultimg.url,
-                'time': goods.update_time.date(),
+                'time': str(goods.update_time.date()) + '  ' + (str(goods.update_time.time()))[0:8],
             })
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'goods': goods_data})
+
+# ****************************************************全部商品*****
+class GoodsAllView(LoginRequiredJSONMixin, View):
+    def get(self, request):
+        goods_data = []
+        userid = request.user.id
+        goodsAll = Goods.objects.filter(is_launched=True).order_by('-update_time')
+        for goods in goodsAll:
+            username = goods.user.username
+            if goods.user_id == userid:
+                chaturl = '/404.html'
+            else:
+                chaturl = '/chatting.html?q=%d-%d' % (goods.id, userid)
+            goods_data.append({
+                'username': username,
+                'chaturl': chaturl,
+                'useravatar': goods.user.avatar.url,
+                'url': '/detail.html?q=%d' % goods.id,
+                'category': goods.category.name,
+                'title': goods.name,
+                'comments': goods.comments,
+                'likes': goods.likes,
+                'price': goods.price,
+                'collects': goods.collect_num,
+                'text': goods.word,
+                'defaultimg': goods.defaultimg.url,
+                'time': str(goods.update_time.date()) + '  ' + (str(goods.update_time.time()))[0:8],
+            })
+        return JsonResponse({'code': 0, 'errmsg': 'ok', 'goodsAll': goods_data})
+
+
+# ****************************************************商品分类*****
+class CategoryGoodsView(LoginRequiredJSONMixin, View):
+    def get(self, request, category):
+        goods_data = []
+        category = int(category)
+        if category < 3:
+            goodsCategory = Goods.objects.filter(Q(is_launched=True) & Q(category__parent_id=category)).order_by(
+                '-update_time')
+        else:
+            goodsCategory = Goods.objects.filter(Q(is_launched=True) & Q(category_id=category)).order_by('-update_time')
+        for goods in goodsCategory:
+            username = goods.user.username
+            if goods.user.id == request.user.id:
+                chaturl = '/404.html'
+            else:
+                chaturl = '/chatting.html?q=%d-%d' % (goods.id, request.user.id)
+            goods_data.append({
+                'username': username,
+                'chaturl': chaturl,
+                'goodsuser': goods.user.id,
+                'useravatar': goods.user.avatar.url,
+                'url': '/detail.html?q=%d' % goods.id,
+                'category': goods.category.name,
+                'title': goods.name,
+                'comments': goods.comments,
+                'likes': goods.likes,
+                'price': goods.price,
+                'collects': goods.collect_num,
+                'text': goods.word,
+                'defaultimg': goods.defaultimg.url,
+                'time': str(goods.update_time.date()) + '  ' + (str(goods.update_time.time()))[0:8],
+            })
+        return JsonResponse({'code': 0, 'errmsg': 'ok', 'goods': goods_data})
+
 
 
 from haystack.views import SearchView
 
 
-class SearchGoodsView(SearchView):
+# ****************************************************搜索商品*****
+class SearchGoodsView(LoginRequiredJSONMixin,SearchView):
     def create_response(self):
         # 获取搜索结果
         context = self.get_context()
         goodslist = []
         # 我们该如何知道里面有什么数据呢
         for item in context['page'].object_list:
+            # if item.user_id == request.user.id:
+            #     chaturl = '/404.html'
+            # else:
+            #     chaturl = '/chatting.html?q=%d-%d' % (goods.id, request.user.id)
             goodslist.append({
                 'id': item.object.id,
+                # 'chaturl': chaturl,
                 'username': item.object.user.username,
                 'useravatar': item.object.user.avatar.url,
                 'title': item.object.name,
@@ -265,7 +270,7 @@ class SearchGoodsView(SearchView):
                 'collects': item.object.collect_num,
                 'text': item.object.word,
                 'defaultimg': item.object.defaultimg.url,
-                'time': item.object.update_time.date(),
+                'time': str(item.object.update_time.date()) + '  ' + (str(item.object.update_time.time()))[0:8],
                 'searchkey': context.get('query'),
                 'page_size': context['page'].paginator.num_pages,
                 'count': context['page'].paginator.count,
@@ -273,18 +278,24 @@ class SearchGoodsView(SearchView):
         return JsonResponse(goodslist, safe=False)
 
 
+# ****************************************************商品细节*****
 class DetailView(View):
     def get(self, request, goodsid):
         goodsid = int(goodsid)
         image = []
         goods = Goods.objects.get(id=goodsid)
         images = goods.goodsimage_set.all()
+        if goods.user_id == request.user.id:
+            chaturl = '/404.html'
+        else:
+            chaturl = '/chatting.html?q=%d-%d' % (goods.id, request.user.id)
         for img in images:
             image.append(img.image.url)
         goods_data = {
             'id': goods.id,
+            'chaturl': chaturl,
             'username': goods.user.username,
-            'class':goods.user.stu_class,
+            'class': goods.user.stu_class,
             'stuname': goods.user.stu_name,
             'stuid': goods.user.stu_id,
             'useravatar': goods.user.avatar.url,
@@ -295,7 +306,6 @@ class DetailView(View):
             'collects': goods.collect_num,
             'text': goods.word,
             'images': image,
-            'time': goods.update_time.date(),
+            'time': str(goods.update_time.date()) + '  ' + (str(goods.update_time.time()))[0:8],
         }
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'goods': goods_data})
-

@@ -232,3 +232,4 @@ HAYSTACK_CONNECTIONS = {
         'INDEX_NAME': 'univwesity_mall', # Elasticsearch建立的索引库的名称
     },
 }
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

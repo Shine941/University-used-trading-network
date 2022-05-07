@@ -65,10 +65,12 @@ class UreadMesView(LoginRequiredJSONMixin, View):
             chat = chat[0]
             sender = chat.sender
             chat.brecever = True
+            chat.save()
             messages = user.message_recever.filter(Q(chatting_id=chat.id) & Q(brecever=False))
             if messages:
                 # 头像 文档
                 for message in messages:
+                    # 已读
                     message.brecever = True
                     message.save()
                     chatmessage.append({
