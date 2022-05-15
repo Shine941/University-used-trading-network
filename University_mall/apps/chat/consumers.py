@@ -22,9 +22,7 @@ class ChatConsumer(WebsocketConsumer):
         group = self.scope['url_route']['kwargs'].get("group")
         goodsid = int(group)
         goods = Goods.objects.get(id=goodsid)  # 商品
-        # self.send("你好")  # 给当前一个人回复 true是买家
-        # 通知组内所有的客户端执行xx_oo的方法，在此方法中可以定义人一功能
-        print(self.scope.get('path'))
+        # print(self.scope.get('path'))
         allmes = message.get('text').split('@#*/')
         senderid = int(allmes[1])  # 发送者id
         thesender = User.objects.get(id=senderid)  # 发送者
@@ -40,6 +38,7 @@ class ChatConsumer(WebsocketConsumer):
             rechatroom[0].brecever = True
             remessage = ChatMessage.objects.filter(Q(chatting_id=rechatroom[0].id) & Q(brecever=False))
             for mes in remessage:
+                print(mes.brecever)
                 mes.brecever = True
                 mes.save()
         # 发送者是否是买家
@@ -48,8 +47,8 @@ class ChatConsumer(WebsocketConsumer):
         else:  # 发送者卖家
             merecever = buyer  # 消息接受者是买家
         if chatroom:  # 有这个房间
-            chatroom=chatroom[0]
-            chatroom.brecever=False # 发送室没看
+            chatroom = chatroom[0]
+            chatroom.brecever=False  # 发送室没看
             chatroom.save()
         else:
             # 发送：先创建房间再创建消息
@@ -69,6 +68,8 @@ class ChatConsumer(WebsocketConsumer):
             text=allmes[3],
             brecever=False,
         )
+        # self.send("你好")  # 给当前一个人回复 true是买家
+        # 通知组内所有的客户端执行xx_oo的方法，在此方法中可以定义人一功能
         async_to_sync(self.channel_layer.group_send)(group, {"type": "xx.oo", "message": message})
 
     def xx_oo(self, event):

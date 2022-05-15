@@ -13,7 +13,9 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.contrib import admin
+from django.template.defaulttags import url
 from django.urls import path, include
 from django.http import HttpResponse
 
@@ -35,6 +37,7 @@ def log(request):
 from utils.converters import UsernameConverter,MobileConverter,StuidConverter,StunameConverter,UseridConverter
 from django.urls import register_converter
 
+
 # 转换器的类；转换器的名字
 register_converter(UsernameConverter, 'username')
 register_converter(MobileConverter, 'mobile')
@@ -50,3 +53,4 @@ urlpatterns = [
     path('', include('apps.goods.urls')),
     path('', include('apps.chat.urls')),
 ]
+

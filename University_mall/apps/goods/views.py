@@ -184,13 +184,12 @@ class GoodsAllView(LoginRequiredJSONMixin, View):
         userid = request.user.id
         goodsAll = Goods.objects.filter(is_launched=True).order_by('-update_time')
         for goods in goodsAll:
-            username = goods.user.username
             if goods.user_id == userid:
                 chaturl = '/404.html'
             else:
                 chaturl = '/chatting.html?q=%d-%d' % (goods.id, userid)
             goods_data.append({
-                'username': username,
+                'username': goods.user.username,
                 'chaturl': chaturl,
                 'useravatar': goods.user.avatar.url,
                 'url': '/detail.html?q=%d' % goods.id,
