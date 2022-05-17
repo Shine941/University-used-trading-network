@@ -185,7 +185,7 @@ class GoodsAllView(LoginRequiredJSONMixin, View):
         goodsAll = Goods.objects.filter(is_launched=True).order_by('-update_time')
         for goods in goodsAll:
             if goods.user_id == userid:
-                chaturl = '/404.html'
+                chaturl = '#'
             else:
                 chaturl = '/chatting.html?q=%d-%d' % (goods.id, userid)
             goods_data.append({
@@ -219,7 +219,7 @@ class CategoryGoodsView(LoginRequiredJSONMixin, View):
         for goods in goodsCategory:
             username = goods.user.username
             if goods.user.id == request.user.id:
-                chaturl = '/404.html'
+                chaturl = '#'
             else:
                 chaturl = '/chatting.html?q=%d-%d' % (goods.id, request.user.id)
             goods_data.append({
@@ -285,7 +285,7 @@ class DetailView(View):
         goods = Goods.objects.get(id=goodsid)
         images = goods.goodsimage_set.all()
         if goods.user_id == request.user.id:
-            chaturl = '/404.html'
+            chaturl = '#'
         else:
             chaturl = '/chatting.html?q=%d-%d' % (goods.id, request.user.id)
         for img in images:
