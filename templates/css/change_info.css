@@ -1,0 +1,285 @@
+body {
+    background-image: url(../images/7.jpg) ;
+    background-repeat: no-repeat;
+    border-style: none;
+    background-position:center;
+    background-size: contain;
+    background-attachment: fixed;
+    background-size: 100%;
+    font-family: Verdana, sans-serif;
+    margin:0;
+    min-width:1200px;
+    min-height: 100%;
+}
+/* 头部制作start */
+
+/*头部制作end*/
+
+/*中间模块制作start*/
+/**aside模块*/
+aside{
+    position: fixed;
+    float: left;
+    top:150px;
+    right: 72%;
+    width: 200px;
+    height: 500px;
+    background-color: rgba(165, 159, 159, 0.459);
+    box-shadow:1px 1px 10px #ffffff;
+    /*圆角化*/
+    border-radius:10px;
+    z-index: 1;
+}
+/*个人主页*/
+aside h1{
+    position: absolute;
+    top:5%;
+    left: 15%;
+    font-size: 35px;
+    color: white;
+}
+/*aside_nav*/
+.aside_nav{
+    position: absolute;
+    top:25%;
+    left: 10%;
+    padding:10px;
+}
+.aside_nav li{
+    height: 60px;
+}
+.aside_nav a{
+    font-family: Verdana, sans-serif;
+    font-size: 20px;
+    padding:10px;
+    color: rgb(255, 255, 255);
+    text-decoration:none;
+}
+.aside_nav a:hover {
+    font-size: 25px;
+    font-weight:bold;
+    color: rgb(119, 119, 119);
+    border-radius:10px;
+}
+#personal_information{
+    font-size: 25px;
+    border-radius:10px;
+    font-weight:bold;
+}
+/*section模块制作*/
+section{
+    position: absolute;
+    top:80px;
+    left: 30%;
+    height: 250px;
+    width: 850px;
+    box-shadow:1px 1px 10px #e6e6e6;
+    border-radius:10px;
+}
+/*主题背景*/
+.theme{
+    top:0%;
+    height: 100%;
+    width: 100%;
+    background-size:cover;
+    border-radius:10px;
+}
+/*头像*/
+.avatar{
+    position: absolute;
+    top: 30%;
+    left: 42%;
+    border-radius:50%;
+    width: 15%;
+}
+/*section--end*/
+/*article模块制作*/
+article{
+    position: absolute;
+    top:350px;
+    left: 30%;
+    width: 850px;
+    height: 600px;
+    background-color: rgba(255, 255, 255, 0.418);
+    box-shadow:1px 1px 10px #e6e6e6;
+    border-radius:10px;
+}
+.blank{
+    position: relative;
+    width: 100%;
+    height: 22px;
+    background-color:rgba(255, 255, 255, 0);
+}
+.list{
+    position: relative;
+    left: 3%;
+    width: 800px;
+    height: 550px;
+    background-color: rgba(112, 112, 112, 0.39);
+    color: rgb(255, 255, 255);
+    border-radius:3%;   
+}
+.list td{
+    vertical-align:middle;
+    width: 300px;
+    height: 70px;
+    font-size: 25px;
+}
+.td_left{
+    text-align: right;
+}
+#td_left1{
+    text-align: right;
+    height: 180px;
+    padding-top:45px;
+}
+#usernameError {
+    position: absolute;
+    font-size: 15px;
+    color: red;
+    top: 38%;
+}
+#phoneError{
+    position: absolute;
+    color: red;
+    font-size: 15px;
+    top: 51%;
+    left: 72%;
+}
+/*输入*/
+.td_right{
+    padding-left: 10px;
+}
+#tel,#username{
+    width: 251px;
+    height: 40px;
+    /*设置边框圆角*/
+    border-radius: 15px;
+    padding-left: 15px ;
+    box-shadow:1px 2px 10px #ffffff;
+
+}
+#checkcode{
+    width: 110px;
+}
+.btn_sub{
+    position: absolute;
+    left: 53%;
+    width: 150px;
+    height: 50px;
+    border-radius: 20px;
+    background-color: #ffffff;
+    box-shadow:1px 1px 10px #ffffff;
+    font-family:enrolltext;
+    font-size:20px;
+}
+.returninfo{
+    position: absolute;
+    left: 28%;
+    width: 150px;
+    height: 50px;
+    border-radius: 20px;
+    background-color: #ffffff;
+    box-shadow:1px 1px 10px #ffffff;
+    font-family:enrolltext;
+    font-size:20px;
+}
+#afphoto{
+    position: absolute;
+    top:10%;
+    left:45%;
+    width:130px;
+    height:130px;
+    border-radius:50%;
+    background-size: cover;
+}
+#imgOne{ 
+    position: absolute;
+    top:10%;
+    left:45%;
+    opacity:0;
+    background-color: transparent;
+    height: 130px;
+    width: 130px;
+    z-index: 1;
+}
+/***************************遮罩********************/
+.active{
+    display: none;
+}
+#shadeDiv {
+    background:rgba(0,0,0,.7);
+    filter: alpha(opacity=50);
+    /* IE的透明度 */
+    opacity: 0.5;
+    /* 透明度 */
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 2; /* 此处的图层要大于页面 */
+}
+.changing {
+    position: fixed;
+    top: 20%;
+    left: 38%;
+    padding: 20px;
+    height: 500px;
+    width: 500px;
+    border-radius:15px;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 3; /* 此处的图层要遮盖层 */
+    box-shadow:1px 1px 10px #c0c0c0;
+}
+#uploadimg{
+    position: relative;
+    float: right;
+    top: 0%;
+}
+#uploadimg button{
+    font-size: 18px;
+    padding: 10px;
+    background-color:rgb(112, 112, 112, 0.39);
+    border-radius: 10px;
+    box-shadow:1px 1px 10px #c0c0c0;
+}
+#urlchange{
+    position: relative;
+    left: 35%;
+    top: 0%;
+    width:150px;
+}
+#urlchange button{
+    font-size: 18px;
+    padding: 10px;
+    background-color:rgb(112, 112, 112, 0.39);
+    border-radius: 10px;
+    box-shadow:1px 1px 10px #c0c0c0;
+}
+.change_act{
+    position: absolute;
+    float: left;
+    top:4%;
+}
+.change_act button{
+    font-size: 18px;
+    padding: 10px;
+    background-color: rgb(112, 112, 112, 0.39);
+    border-radius: 10px;
+    box-shadow:1px 1px 10px #c0c0c0;
+}
+.change_img{
+    position: relative;
+    height: 400px;
+    width: 400px;
+    left: 6%;
+    top: 3%;
+    border-radius: 5%;
+}
+.change_img img{
+    max-height: 400px;
+    max-width: 400px;
+}
+
+/*中间模块end*/

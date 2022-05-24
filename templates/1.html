@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script type="text/javascript" src="js/axios-0.18.0.min.js"></script>
+    <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <section id="vue-imgUpload">
+            <div class="upload-pic">
+                <label class="up-lab" for="add-pic-btn">上传图片集</label>
+                <input type="file" accept="image/*" multiple class="up-file" id="add-pic-btn" @change="addImg()">
+            </div>
+            <div class="group-coms-pic" v-if="list.length>0" v-cloak>
+                <div class="item" v-for="(v,i) in list" :key="i" >
+                    <div class="pic-box">
+                        <img class="img" :src="v.src">
+                    </div>
+                    <div class="tk">{{v.name}}</div>
+                    <span class="del" @click="delImg(i)">x</span>
+                </div>
+            </div>
+        </section>        
+      </div>
+    <script type="text/javascript" src="./1.js"></script>
+</body>
+</html>

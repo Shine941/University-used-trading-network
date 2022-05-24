@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人空间</title>
+    <script type="text/javascript" src="./js/vue-2.5.16.js"></script>
+    <script type="text/javascript" src="./js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="./js/axios-0.18.0.min.js"></script>
+    <script type="text/javascript" src="./js/host.js"></script>
+    <script type="text/javascript" src="./js/common.js"></script>
+    <script type="text/javascript" src="./js/personal.js"></script>
+    <link rel="stylesheet" href="./images/icon/iconfont.css">
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/personal.css">
+    <link rel="shortcut icon" href="./favicon.ico">
+</head>
+<body>
+    <div id="app">
+        <!-- 头部模块制作start -->
+        <header class="header">
+            <div class="logo">
+                <img src="./images/logo.png" alt="">
+            </div>
+            <div class="logotext">
+                <img src="./images/logotext.png" alt="">
+            </div>
+            <!--导航模块-->
+            <nav>
+                <table class="head">
+                    <th class="head_search">
+                        <div class="ser_head">
+                            <div class="sehead_input">
+                                <b><input type="text" name="serch_text" id="headser_text"></b>
+                                <button class=""></button>
+                            </div>
+                            <div class="sehead_img">
+                                <img src="./images/搜索.png" alt="">
+                            </div>
+                        </div>
+                    </th>
+                    <th class="head_new">
+                        <a href="./new_post.html">新建</a>
+                    </th>
+                    <th>
+                        <a href="./center.html">商城</a>
+                    </th>
+                    <th>
+                        <a href="./enroll.html" target="_blank">通知</a>
+                    </th>
+                    <th v-if="username" class="login_btn fl">
+                        <a href="./personal.html">[[username]]</a>
+                    </th>
+                    <th v-else class="login_btn fl">
+                        <a href="./login.html">登录</a>
+                    </th>
+                    <th>
+                         <a @click="logout" class="quit">退出</a>
+                    </th>
+                </table>
+            </nav>
+        </header>
+        <!-- 头部模块制作end -->  
+        <!--中间模块制作start-->
+        <!-- aside模块制作start -->
+        <aside>
+            <h1>个人主页</h1>
+            <!-- aside_nav制作 -->
+            <div class="aside_nav">
+                <ul class="ul_sidebar">
+                    <li><a href="./personal.html" id="source_all">我的待售</a></li>
+                    <li><a href="./my_sold.html" id="my_sold">我的卖出</a></li>
+                    <li><a href="./my_bought.html" id="my_bought">我的已购</a></li>
+                    <li><a href="./my_collect.html" id="my_collect">我的收藏</a></li>
+                    <li><a href="./my_message.html" id="my_message">我的消息</a></li>
+                    <li><a href="./my_info.html" id="personal_information">个人资料</a></li>
+                </ul>
+            </div>
+        </aside>
+        <!-- aside模块制作end -->
+
+        <!--section模块制作start-->
+        <section>
+            <a href="#"><img src="./images/3.jpg" class="theme"></a>
+            <img :src="avatarurl" class="avatar">
+        </section>
+        <!--section模块制作end-->
+
+        <!--article模块制作start-->
+        <article>
+            <div class="po_model">
+                <div class="blank"></div>
+                <div class="post_model" v-for="goods in mygoods">
+                    <div class="blank"></div>
+                    <div class="post_mod">
+                    <div class="post_info">
+                        <div class="post_money">
+                            <div class="money_num">[[goods.price]] 元</div>
+                        </div>
+                        <div class = "info_uravatar">
+                            <img :src="goods.useravatar">
+                        </div>
+                        <div class = "info_urname">
+                            [[goods.username]]
+                        </div>
+                        <h1>[[goods.title]]</h1>
+                        <div class="info_time">
+                            <a href="#">[[goods.time]]</a>
+                        </div>
+                        <button  class="info_del"><a @click="delgoods(goods.id)" class="iconfont">&#xe718;</a></button>   
+                    </div>
+                    <div class="post_text">
+                        <p>[[goods.text]]</p>
+                    </div>
+                    <div class="blank"></div>
+                    <div class="post_img">
+                        <img :src="goods.defaultimg" alt="">
+                    </div>
+                    <div class="blank"></div>
+                    <div class="post_end">
+                        <div class="pend_mark">
+                            <div class="ma_good">
+                                <a href="#"class="iconfont">&#xe651;</a>
+                                <span>(</span><span class="mar_text" id="goo_num">[[goods.likes]]</span><span>)</span>
+                            </div>
+                            <div class="ma_comm">
+                                <a href="#"class="iconfont">&#xe65a;</a>
+                                <span>(</span><span id="com_num">[[goods.comments]]</span><span>)</span>
+                            </div>
+                            <div class="ma_col">
+                                <a href="#" class="iconfont">&#xe8b4;</a>
+                                <span>(</span><span id="com_num">[[goods.collects]]</span><span>)</span>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="blank"></div>
+        </article>
+        <!--article模块制作end-->
+    </div>
+</body>
+</html>
